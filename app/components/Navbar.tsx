@@ -147,7 +147,8 @@ export default function Navbar() {
 
                     {/* ── Right CTAs ── */}
                     <div className="nav-cta" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <Link href="/login"
+                        {/* LOCALHOST URL FOR LIS SOFTWARE LOGIN */}
+                        <Link href="http://lis.onepathlab.localhost:3001/login"
                             style={{
                                 padding: '9px 22px',
                                 fontSize: 14, fontWeight: 600,
@@ -255,7 +256,8 @@ export default function Navbar() {
                     borderTop: '1px solid #f1f5f9',
                     display: 'flex', flexDirection: 'column', gap: 10,
                 }}>
-                    <Link href="/login" onClick={() => setMenuOpen(false)} style={{
+                    {/* LOCALHOST URL FOR LIS SOFTWARE LOGIN */}
+                    <Link href="http://lis.onepathlab.localhost:3001/login" onClick={() => setMenuOpen(false)} style={{
                         display: 'block', textAlign: 'center',
                         padding: '13px',
                         fontSize: 15, fontWeight: 600,

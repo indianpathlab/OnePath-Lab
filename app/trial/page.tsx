@@ -52,6 +52,7 @@ export default function SignUp() {
     const [selectedPlan, setSelectedPlan] = useState<'basic' | 'pro'>('pro')
     const [isLoading, setIsLoading] = useState(false)
     const [isSuccess, setIsSuccess] = useState(false)
+    const [error, setError] = useState('')
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -68,25 +69,71 @@ export default function SignUp() {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+        setError('')
     }
 
-    const handleDropdownSelect = (value: string) => {
+    const handleDropdownSelect = (e: React.MouseEvent, value: string) => {
+        e.stopPropagation(); // Event bubble roko
         setFormData({ ...formData, patientCount: value })
         setIsDropdownOpen(false)
+        setError('')
     }
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
+    const handlePlanSelect = (plan: 'basic' | 'pro') => {
+        setSelectedPlan(plan);
+    }
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError('');
+
         if (!formData.patientCount) {
-            alert('Please select daily patient volume')
-            return
+            setError('Please select daily patient volume');
+            return;
         }
-        setIsLoading(true)
-        // Simulate API Signup delay
-        setTimeout(() => {
-            setIsLoading(false)
-            setIsSuccess(true)
-        }, 1500)
+
+        setIsLoading(true);
+
+        try {
+            console.log("Sending API Request..."); // For debugging
+
+            const response = await fetch('http://127.0.0.1:8000/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: formData.name,
+                    phone: formData.phone,
+                    email: formData.email,
+                    password: formData.password,
+                    labName: formData.labName,
+                    patientCount: formData.patientCount,
+                    plan_type: selectedPlan
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                if (data.errors) {
+                    // Extracting all array messages nicely
+                    const errorMessages = Object.values(data.errors).flat().join('\n');
+                    throw new Error(errorMessages);
+                }
+                throw new Error(data.message || 'Registration failed. Please try again.');
+            }
+
+            // Success state update
+            setIsSuccess(true);
+
+        } catch (err: any) {
+            console.error('Registration Error:', err.message);
+            setError(err.message || 'Unable to connect to the server.');
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -102,7 +149,7 @@ export default function SignUp() {
                 </Link>
                 <div style={{ fontSize: 15, fontWeight: 600, color: '#475569', fontFamily: "'DM Sans', sans-serif" }}>
                     <span className="hide-on-mobile">Already have an account? </span>
-                    <Link href="/login" style={{ color: 'var(--blue-primary)', textDecoration: 'none', fontWeight: 700 }}>Log in</Link>
+                    <Link href="/login" style={{ color: '#2563eb', textDecoration: 'none', fontWeight: 700 }}>Log in</Link>
                 </div>
             </div>
 
@@ -116,16 +163,23 @@ export default function SignUp() {
                             <div className="animate-fade-in">
                                 <div style={{ marginBottom: 36 }}>
                                     <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 800, color: '#0f172a', fontFamily: "'Syne', sans-serif", marginBottom: 12, letterSpacing: '-0.02em', lineHeight: 1.15 }}>
-                                        Start your <span style={{ color: 'var(--blue-primary)' }}>1-Month Free</span> Trial
+                                        Start your <span style={{ color: '#2563eb' }}>1-Month Free</span> Trial
                                     </h1>
                                     <p style={{ color: '#64748b', fontSize: 16, fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}>
                                         Set up your lab in minutes. No credit card required.
                                     </p>
                                 </div>
 
+                                {/* Error Message Display */}
+                                {error && (
+                                    <div style={{ padding: '12px 16px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: '12px', marginBottom: '24px', fontSize: '14px', fontFamily: "'DM Sans', sans-serif", whiteSpace: 'pre-line' }}>
+                                        {error}
+                                    </div>
+                                )}
+
+                                {/* FORM START - Changed to onSubmit and standard button */}
                                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
 
-                                    {/* Personal Details Row */}
                                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 20 }}>
                                         <div>
                                             <label style={labelStyle}>Full Name</label>
@@ -143,7 +197,6 @@ export default function SignUp() {
                                         </div>
                                     </div>
 
-                                    {/* Account Details Row */}
                                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 20 }}>
                                         <div>
                                             <label style={labelStyle}>Email Address</label>
@@ -161,7 +214,6 @@ export default function SignUp() {
                                         </div>
                                     </div>
 
-                                    {/* Lab Details */}
                                     <div>
                                         <label style={labelStyle}>Laboratory Name</label>
                                         <div className="input-group custom-input" style={inputGroupStyle}>
@@ -170,7 +222,7 @@ export default function SignUp() {
                                         </div>
                                     </div>
 
-                                    {/* Premium Custom Dropdown */}
+                                    {/* Premium Custom Dropdown FIX */}
                                     <div ref={dropdownRef}>
                                         <label style={labelStyle}>Daily Patient Volume</label>
                                         <div className="input-group" style={{ ...inputGroupStyle, position: 'relative' }}>
@@ -185,8 +237,8 @@ export default function SignUp() {
                                                     display: 'flex',
                                                     alignItems: 'center',
                                                     justifyContent: 'space-between',
-                                                    borderColor: isDropdownOpen ? 'var(--blue-primary)' : '#cbd5e1',
-                                                    boxShadow: isDropdownOpen ? '0 0 0 4px rgba(59, 130, 246, 0.1)' : 'none'
+                                                    borderColor: isDropdownOpen ? '#2563eb' : '#cbd5e1',
+                                                    boxShadow: isDropdownOpen ? '0 0 0 4px rgba(37, 99, 235, 0.1)' : 'none'
                                                 }}
                                             >
                                                 <span style={{ color: formData.patientCount ? '#0f172a' : '#94a3b8' }}>
@@ -195,7 +247,6 @@ export default function SignUp() {
                                                 <ChevronDown size={18} color="#94a3b8" style={{ transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s ease' }} />
                                             </div>
 
-                                            {/* Dropdown Menu */}
                                             {isDropdownOpen && (
                                                 <div className="dropdown-menu animate-fade-in" style={{
                                                     position: 'absolute', top: '100%', left: 0, right: 0, marginTop: '8px',
@@ -205,7 +256,7 @@ export default function SignUp() {
                                                     {patientOptions.map((opt) => (
                                                         <div
                                                             key={opt.value}
-                                                            onClick={() => handleDropdownSelect(opt.value)}
+                                                            onClick={(e) => handleDropdownSelect(e, opt.value)}
                                                             className="dropdown-item"
                                                             style={{
                                                                 padding: '14px 16px', cursor: 'pointer', fontSize: '14px',
@@ -221,7 +272,7 @@ export default function SignUp() {
                                         </div>
                                     </div>
 
-                                    {/* Plan Selection */}
+                                    {/* Plan Selection FIX */}
                                     <div style={{ marginTop: 8 }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
                                             <label style={{ ...labelStyle, marginBottom: 0 }}>Select your Plan</label>
@@ -231,9 +282,8 @@ export default function SignUp() {
                                         </div>
 
                                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
-                                            {/* Basic Plan */}
                                             <div
-                                                onClick={() => setSelectedPlan('basic')}
+                                                onClick={() => handlePlanSelect('basic')}
                                                 className={`plan-card ${selectedPlan === 'basic' ? 'selected' : ''}`}
                                             >
                                                 {selectedPlan === 'basic' && <div className="check-icon"><CheckCircle2 size={20} /></div>}
@@ -242,9 +292,8 @@ export default function SignUp() {
                                                 <p className="plan-desc">Ideal for small labs.<br />Machine Integration & Smart Reports.</p>
                                             </div>
 
-                                            {/* Pro Plan */}
                                             <div
-                                                onClick={() => setSelectedPlan('pro')}
+                                                onClick={() => handlePlanSelect('pro')}
                                                 className={`plan-card ${selectedPlan === 'pro' ? 'selected' : ''}`}
                                             >
                                                 {selectedPlan === 'pro' && <div className="check-icon"><CheckCircle2 size={20} /></div>}
@@ -256,13 +305,12 @@ export default function SignUp() {
                                         </div>
                                     </div>
 
-                                    {/* Submit Button */}
                                     <button type="submit" disabled={isLoading} className="submit-btn" style={{
-                                        padding: '18px', borderRadius: '14px', background: 'var(--blue-primary)', color: '#ffffff',
+                                        padding: '18px', borderRadius: '14px', background: '#2563eb', color: '#ffffff',
                                         fontSize: 16, fontWeight: 700, fontFamily: "'DM Sans', sans-serif", border: 'none',
                                         cursor: isLoading ? 'not-allowed' : 'pointer', transition: 'all 0.2s ease',
                                         display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginTop: 16,
-                                        boxShadow: '0 10px 25px -6px rgba(59, 130, 246, 0.5)'
+                                        boxShadow: '0 10px 25px -6px rgba(37, 99, 235, 0.5)'
                                     }}>
                                         {isLoading ? <span className="spinner" /> : (
                                             <>Start Free Trial <ArrowRight size={18} /></>
@@ -275,7 +323,7 @@ export default function SignUp() {
                                 </form>
                             </div>
                         ) : (
-                            /* Success State Component */
+                            /* Success State */
                             <div className="animate-fade-in" style={{ textAlign: 'center', padding: '60px 20px', background: '#ffffff', borderRadius: '24px', border: '1px solid #e2e8f0', boxShadow: '0 10px 40px -10px rgba(0,0,0,0.05)' }}>
                                 <div style={{ width: 80, height: 80, background: '#dcfce7', color: '#16a34a', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', boxShadow: '0 0 0 10px rgba(34,197,94,0.1)' }}>
                                     <CheckCircle2 size={40} />
@@ -284,10 +332,10 @@ export default function SignUp() {
                                     Welcome aboard, {formData.name.split(' ')[0]}!
                                 </h2>
                                 <p style={{ fontSize: 16, color: '#64748b', fontFamily: "'DM Sans', sans-serif", lineHeight: 1.6, marginBottom: 32 }}>
-                                    Your 1-month free trial for <strong>{formData.labName}</strong> is activated under the <strong>{selectedPlan === 'pro' ? 'Pro' : 'Basic'} Plan</strong>. We've sent a secure login link to <strong>{formData.email}</strong>.
+                                    Your 1-month free trial for <strong>{formData.labName}</strong> has been requested under the <strong>{selectedPlan === 'pro' ? 'Pro' : 'Basic'} Plan</strong>. Please wait for admin approval. We will notify you at <strong>{formData.email}</strong>.
                                 </p>
-                                <Link href="/login" className="submit-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '16px 36px', background: 'var(--blue-primary)', color: '#fff', borderRadius: '12px', textDecoration: 'none', fontWeight: 700, fontFamily: "'DM Sans', sans-serif", boxShadow: '0 8px 20px -6px rgba(59, 130, 246, 0.4)' }}>
-                                    Go to Dashboard <ArrowRight size={18} />
+                                <Link href="/login" className="submit-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '16px 36px', background: '#2563eb', color: '#fff', borderRadius: '12px', textDecoration: 'none', fontWeight: 700, fontFamily: "'DM Sans', sans-serif", boxShadow: '0 8px 20px -6px rgba(37, 99, 235, 0.4)' }}>
+                                    Go to Login <ArrowRight size={18} />
                                 </Link>
                             </div>
                         )}
@@ -306,12 +354,10 @@ export default function SignUp() {
                     position: 'relative',
                     overflow: 'hidden'
                 }}>
-                    {/* Glowing Background Orbs */}
-                    <div style={{ position: 'absolute', top: -100, right: -100, width: 400, height: 400, background: 'rgba(59, 130, 246, 0.3)', borderRadius: '50%', filter: 'blur(120px)', pointerEvents: 'none' }} />
+                    <div style={{ position: 'absolute', top: -100, right: -100, width: 400, height: 400, background: 'rgba(37, 99, 235, 0.3)', borderRadius: '50%', filter: 'blur(120px)', pointerEvents: 'none' }} />
                     <div style={{ position: 'absolute', bottom: -100, left: -100, width: 300, height: 300, background: 'rgba(139, 92, 246, 0.2)', borderRadius: '50%', filter: 'blur(100px)', pointerEvents: 'none' }} />
 
                     <div style={{ position: 'relative', zIndex: 1, maxWidth: 460 }}>
-
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(34, 197, 94, 0.15)', border: '1px solid rgba(34, 197, 94, 0.3)', padding: '6px 16px', borderRadius: '100px', color: '#4ade80', fontSize: 13, fontWeight: 800, fontFamily: "'DM Sans', sans-serif", marginBottom: 24, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                             <Sparkles size={14} /> 30 Days Free
                         </div>
@@ -324,7 +370,6 @@ export default function SignUp() {
                             Get full access to our software for 30 days. No hidden charges. We'll even help you set up your machines for free.
                         </p>
 
-                        {/* Feature Highlights List */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
                             {[
                                 { icon: <Zap size={24} color="#60a5fa" />, title: 'Instant Machine Integration', desc: 'Connect Cell Counters & Biochemistry analyzers in minutes.' },
@@ -347,25 +392,22 @@ export default function SignUp() {
 
             </div>
 
-            {/* Global Styles for Premium Interactions */}
-            <style>{`
-                /* Inputs Animation */
+            <style dangerouslySetInnerHTML={{
+                __html: `
                 .custom-input input:focus {
-                    border-color: var(--blue-primary) !important;
-                    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+                    border-color: #2563eb !important;
+                    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
                     background: #ffffff !important;
                 }
-                .custom-input:focus-within svg { color: var(--blue-primary) !important; }
+                .custom-input:focus-within svg { color: #2563eb !important; }
 
-                /* Custom Dropdown Hover */
                 .dropdown-item:last-child { border-bottom: none !important; }
                 .dropdown-item:hover {
                     background: #f8fafc !important;
-                    color: var(--blue-primary) !important;
+                    color: #2563eb !important;
                     font-weight: 600;
                 }
 
-                /* Premium Plan Cards */
                 .plan-card {
                     border: 2px solid #e2e8f0;
                     background: #ffffff;
@@ -383,23 +425,22 @@ export default function SignUp() {
                     background: #f8fafc;
                 }
                 .plan-card.selected {
-                    border-color: var(--blue-primary);
+                    border-color: #2563eb;
                     background: #eff6ff;
-                    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.15);
+                    box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.15);
                     transform: translateY(-2px);
                 }
                 .plan-title { font-size: 16px; font-weight: 700; color: #0f172a; font-family: 'Syne', sans-serif; }
-                .plan-price { font-size: 24px; font-weight: 800; color: var(--blue-primary); font-family: 'Syne', sans-serif; margin-bottom: 4px; }
+                .plan-price { font-size: 24px; font-weight: 800; color: #2563eb; font-family: 'Syne', sans-serif; margin-bottom: 4px; }
                 .plan-price span { font-size: 13px; font-weight: 600; color: #64748b; font-family: 'DM Sans', sans-serif; }
                 .plan-desc { font-size: 13px; color: #64748b; font-family: 'DM Sans', sans-serif; line-height: 1.5; }
-                .check-icon { position: absolute; top: 16px; right: 16px; color: var(--blue-primary); animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-                .recommended-badge { position: absolute; top: -10px; left: 16px; background: var(--blue-primary); color: white; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 100px; font-family: 'DM Sans', sans-serif; letter-spacing: 0.05em; }
+                .check-icon { position: absolute; top: 16px; right: 16px; color: #2563eb; animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+                .recommended-badge { position: absolute; top: -10px; left: 16px; background: #2563eb; color: white; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 100px; font-family: 'DM Sans', sans-serif; letter-spacing: 0.05em; }
 
-                /* Animations */
                 .submit-btn:hover:not(:disabled) {
-                    background: #2563eb !important;
+                    background: #1d4ed8 !important;
                     transform: translateY(-2px);
-                    box-shadow: 0 12px 30px -6px rgba(59, 130, 246, 0.6) !important;
+                    box-shadow: 0 12px 30px -6px rgba(37, 99, 235, 0.6) !important;
                 }
 
                 .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
@@ -411,14 +452,13 @@ export default function SignUp() {
 
                 .hide-on-mobile { display: inline; }
 
-                /* Responsive Breakpoints */
                 @media (max-width: 950px) {
                     .signup-wrapper { flex-direction: column; }
-                    .signup-info-section { display: none; } /* Focus on form on mobile */
+                    .signup-info-section { display: none; }
                     .signup-form-section { padding: 32px 20px !important; }
                     .hide-on-mobile { display: none; }
                 }
-            `}</style>
+            `}} />
         </main>
     )
 }
