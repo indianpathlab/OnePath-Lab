@@ -56,7 +56,6 @@ export default function SignUp() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const dropdownRef = useRef<HTMLDivElement>(null)
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -73,7 +72,7 @@ export default function SignUp() {
     }
 
     const handleDropdownSelect = (e: React.MouseEvent, value: string) => {
-        e.stopPropagation(); // Event bubble roko
+        e.stopPropagation();
         setFormData({ ...formData, patientCount: value })
         setIsDropdownOpen(false)
         setError('')
@@ -83,7 +82,7 @@ export default function SignUp() {
         setSelectedPlan(plan);
     }
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent | React.MouseEvent) => {
         e.preventDefault();
         setError('');
 
@@ -95,9 +94,9 @@ export default function SignUp() {
         setIsLoading(true);
 
         try {
-            console.log("Sending API Request..."); // For debugging
+            console.log("Sending API Request with data:", formData);
 
-            const response = await fetch('http://127.0.0.1:8000/api/auth/register', {
+            const response = await fetch('http://192.168.31.192:8000/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -115,21 +114,20 @@ export default function SignUp() {
             });
 
             const data = await response.json();
+            console.log("API Response Received:", data);
 
             if (!response.ok) {
                 if (data.errors) {
-                    // Extracting all array messages nicely
                     const errorMessages = Object.values(data.errors).flat().join('\n');
                     throw new Error(errorMessages);
                 }
                 throw new Error(data.message || 'Registration failed. Please try again.');
             }
 
-            // Success state update
             setIsSuccess(true);
 
         } catch (err: any) {
-            console.error('Registration Error:', err.message);
+            console.error('Registration Catch Error:', err.message);
             setError(err.message || 'Unable to connect to the server.');
         } finally {
             setIsLoading(false);
@@ -177,8 +175,8 @@ export default function SignUp() {
                                     </div>
                                 )}
 
-                                {/* FORM START - Changed to onSubmit and standard button */}
-                                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+                                {/* FIX: Form onSubmit bas browser event ko neutralize karega */}
+                                <form onSubmit={(e) => e.preventDefault()} style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
 
                                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 20 }}>
                                         <div>
@@ -222,7 +220,6 @@ export default function SignUp() {
                                         </div>
                                     </div>
 
-                                    {/* Premium Custom Dropdown FIX */}
                                     <div ref={dropdownRef}>
                                         <label style={labelStyle}>Daily Patient Volume</label>
                                         <div className="input-group" style={{ ...inputGroupStyle, position: 'relative' }}>
@@ -272,7 +269,6 @@ export default function SignUp() {
                                         </div>
                                     </div>
 
-                                    {/* Plan Selection FIX */}
                                     <div style={{ marginTop: 8 }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
                                             <label style={{ ...labelStyle, marginBottom: 0 }}>Select your Plan</label>
@@ -305,13 +301,20 @@ export default function SignUp() {
                                         </div>
                                     </div>
 
-                                    <button type="submit" disabled={isLoading} className="submit-btn" style={{
-                                        padding: '18px', borderRadius: '14px', background: '#2563eb', color: '#ffffff',
-                                        fontSize: 16, fontWeight: 700, fontFamily: "'DM Sans', sans-serif", border: 'none',
-                                        cursor: isLoading ? 'not-allowed' : 'pointer', transition: 'all 0.2s ease',
-                                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginTop: 16,
-                                        boxShadow: '0 10px 25px -6px rgba(37, 99, 235, 0.5)'
-                                    }}>
+                                    {/* FIX: type="button" aur onClick direct attach kar diya */}
+                                    <button
+                                        type="button"
+                                        onClick={handleSubmit}
+                                        disabled={isLoading}
+                                        className="submit-btn"
+                                        style={{
+                                            padding: '18px', borderRadius: '14px', background: '#2563eb', color: '#ffffff',
+                                            fontSize: 16, fontWeight: 700, fontFamily: "'DM Sans', sans-serif", border: 'none',
+                                            cursor: isLoading ? 'not-allowed' : 'pointer', transition: 'all 0.2s ease',
+                                            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginTop: 16,
+                                            boxShadow: '0 10px 25px -6px rgba(37, 99, 235, 0.5)'
+                                        }}
+                                    >
                                         {isLoading ? <span className="spinner" /> : (
                                             <>Start Free Trial <ArrowRight size={18} /></>
                                         )}
