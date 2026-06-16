@@ -77,7 +77,7 @@ export default function Hero() {
                             <ArrowRight size={18} />
                         </Link>
                         <p style={{ fontSize: 13, color: 'var(--gray-mid)', fontWeight: 600, letterSpacing: '0.02em' }}>
-                            NO CREDIT CARD REQUIRED • TRUSTED BY 2000+ NABL LABS
+                            • NO CREDIT CARD REQUIRED
                         </p>
                     </div>
 

@@ -101,7 +101,7 @@ export default function CTA() {
                     fontWeight: 500,
                     fontFamily: "'DM Sans', sans-serif",
                 }}>
-                    Join 2000+ labs already running on OnePath. Start your free 5-day trial today — no setup fees, no commitments.
+                    Join 200+ labs already running on OnePath. Start your free 1-Months trial today — no setup fees, no commitments.
                 </p>
 
                 {/* Interactive Buttons */}
@@ -125,7 +125,7 @@ export default function CTA() {
                     </Link>
 
                     <a
-                        href="https://api.whatsapp.com/send?phone=9266837566&text=Hello, I'm interested in your Lab software."
+                        href="https://api.whatsapp.com/send?phone=9045757272&text=Hello, I'm interested in your Lab software."
                         target="_blank"
                         rel="noreferrer"
                         className="btn-whatsapp"
@@ -159,9 +159,9 @@ export default function CTA() {
                     borderTop: '1px solid rgba(15, 23, 42, 0.06)',
                 }}>
                     {[
-                        { label: 'Sales', value: '+91 92173 27134' },
-                        { label: 'Support', value: '+91 72539 28905' },
-                        { label: 'Email', value: 'hello@onepath.in' }, // Updated email
+                        { label: 'Sales', value: '+91 9058459848' },
+                        { label: 'Support', value: '+91 9045757272' },
+                        { label: 'Email', value: 'support@onepathlab.com' },
                     ].map(item => (
                         <div key={item.label} style={{ textAlign: 'center' }}>
                             <div style={{

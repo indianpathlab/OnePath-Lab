@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import {
-    ArrowRight, CheckCircle, Shield, Zap, Globe, Users, Brain,
+    ArrowRight, CheckCircle, Shield, Zap, Globe, Users,
     BarChart3, Smartphone, Lock, Server, Clock, FileText,
     Microscope, GitBranch, CreditCard, MessageSquare, Star,
     ChevronDown, Play, TrendingUp, Database, Cpu, Award,
@@ -44,14 +44,14 @@ function useInView(threshold = 0.15) {
 
 /* ── Data ── */
 const coreFeatures = [
-    { icon: <Brain size={22} />, color: '#7c3aed', bg: '#f5f3ff', title: 'AI-Powered Reporting', desc: 'Auto-generate clinical interpretations, flag critical values, and suggest follow-up tests using our proprietary AI engine trained on 10M+ Indian lab reports.' },
-    { icon: <Microscope size={22} />, color: '#2563eb', bg: '#eff6ff', title: 'Machine Interfacing', desc: 'Bi-directional integration with 80+ analyzer brands (Sysmex, Roche, Abbott, Mindray, Siemens). Results flow automatically — zero manual entry.' },
-    { icon: <MessageSquare size={22} />, color: '#059669', bg: '#ecfdf5', title: 'Instant Report Delivery', desc: 'Reports delivered to patients via WhatsApp, SMS, and email within seconds of approval. Branded PDF with your lab\'s logo and letterhead.' },
+    { icon: <Cpu size={22} />, color: '#7c3aed', bg: '#f5f3ff', title: 'Smart Rules Engine', desc: 'Automated calculations for derived parameters, delta checks against patient history, and automatic red-flagging of critical values based on age and gender.' },
+    { icon: <Microscope size={22} />, color: '#2563eb', bg: '#eff6ff', title: 'Machine Interfacing', desc: 'Bi-directional integration with 200+ analyzer models (Sysmex, Roche, Abbott, Mindray, Beckman). Results flow straight to the report — zero manual entry.' },
+    { icon: <MessageSquare size={22} />, color: '#059669', bg: '#ecfdf5', title: 'WhatsApp Automation', desc: 'Reports delivered to patients and referring doctors via WhatsApp, SMS, and email within seconds of digital signature approval.' },
     { icon: <GitBranch size={22} />, color: '#d97706', bg: '#fffbeb', title: 'Multi-Branch Management', desc: 'Manage unlimited lab branches from a single dashboard. Each center has independent queues, billing, and reporting — with centralized MIS analytics.' },
-    { icon: <CreditCard size={22} />, color: '#0891b2', bg: '#ecfeff', title: 'Integrated Billing & Finance', desc: 'GST-compliant invoicing, corporate billing, credit management, doctor commissions, and daily financial reports — all automated.' },
-    { icon: <BarChart3 size={22} />, color: '#dc2626', bg: '#fef2f2', title: 'Real-Time Analytics', desc: 'Live dashboards for TAT tracking, test volume trends, revenue analytics, referral performance, and NABL audit-ready QC reports.' },
-    { icon: <Smartphone size={22} />, color: '#7c3aed', bg: '#f5f3ff', title: 'Mobile Apps', desc: 'Dedicated apps for lab staff (Android/iOS), phlebotomists, referring doctors, and patients. Full workflow accessible on any device.' },
-    { icon: <FlaskConical size={22} />, color: '#2563eb', bg: '#eff6ff', title: 'NABL Quality Control', desc: 'Built-in Levey-Jennings charts, Westgard rules engine, IQC/EQC management, and complete audit trail for NABL ISO 15189:2022 compliance.' },
+    { icon: <CreditCard size={22} />, color: '#0891b2', bg: '#ecfeff', title: 'Integrated Billing & Finance', desc: 'GST-compliant invoicing, corporate B2B billing, credit management, doctor commissions, and daily financial reconciliation reports.' },
+    { icon: <BarChart3 size={22} />, color: '#dc2626', bg: '#fef2f2', title: 'Real-Time Analytics', desc: 'Live dashboards for TAT tracking, test volume trends, revenue analytics, referral performance, and dynamic inventory consumption.' },
+    { icon: <Smartphone size={22} />, color: '#7c3aed', bg: '#f5f3ff', title: 'Mobile-Ready Portals', desc: 'Dedicated web portals for phlebotomists (home collection), referring doctors, and patients. Full lab workflow accessible securely on any device.' },
+    { icon: <FlaskConical size={22} />, color: '#2563eb', bg: '#eff6ff', title: 'NABL Quality Control', desc: 'Built-in Levey-Jennings charts, Westgard rules engine, IQC/EQC management, and complete audit trails for NABL ISO 15189:2022 compliance.' },
     { icon: <Stethoscope size={22} />, color: '#059669', bg: '#ecfdf5', title: 'Doctor Referral System', desc: 'Track referrals, automate commission calculations, generate doctor-wise MIS, and provide referring doctors a portal to view their patients\' reports.' },
 ]
 
@@ -74,34 +74,34 @@ const multiTenancyPoints = [
 
 const comparisonData = [
     { feature: 'Cloud-Based Access Anywhere', onepath: true, offline: false, saas: true },
-    { feature: 'AI Report Interpretation', onepath: true, offline: false, saas: false },
-    { feature: 'Machine Interfacing (Bi-dir)', onepath: true, offline: false, saas: false },
+    { feature: 'Bi-directional Machine Interfacing', onepath: true, offline: false, saas: false },
+    { feature: 'Auto-Calculations & Delta Checks', onepath: true, offline: false, saas: false },
     { feature: 'WhatsApp Report Delivery', onepath: true, offline: false, saas: true },
     { feature: 'Multi-Branch Management', onepath: true, offline: false, saas: false },
     { feature: 'NABL QC Module (ISO 15189)', onepath: true, offline: false, saas: false },
-    { feature: 'Patient Mobile App', onepath: true, offline: false, saas: false },
-    { feature: 'Doctor Referral Portal', onepath: true, offline: false, saas: false },
+    { feature: 'Patient & Doctor Portals', onepath: true, offline: false, saas: false },
+    { feature: 'B2B Corporate Billing', onepath: true, offline: false, saas: false },
     { feature: 'Real-Time MIS Analytics', onepath: true, offline: false, saas: true },
     { feature: 'ABHA / ABDM Integration', onepath: true, offline: false, saas: false },
     { feature: 'Free Data Migration', onepath: true, offline: 'NA', saas: false },
     { feature: 'Data Stored in India (AWS Mumbai)', onepath: true, offline: false, saas: false },
     { feature: 'Per-Lab Data Isolation', onepath: true, offline: true, saas: false },
     { feature: 'Automatic Software Updates', onepath: true, offline: false, saas: true },
-    { feature: 'Starting Price', onepath: '₹999/mo', offline: '₹25,000 one-time', saas: '₹2,500/mo' },
+    { feature: 'Starting Price', onepath: '₹2,499/6m', offline: '₹25,000 one-time', saas: '₹4,999/y' },
 ]
 
 const testimonials = [
-    { name: 'Dr. Rakesh Gupta', lab: 'Gupta Diagnostics, Delhi', stars: 5, text: 'Switched from a 12-year-old offline software to OnePath in 2 days. The AI interpretation feature alone saves my team 3 hours every single day. The NABL audit last month was the smoothest in our lab\'s history.' },
+    { name: 'Dr. Rakesh Gupta', lab: 'Gupta Diagnostics, Delhi', stars: 5, text: 'Switched from a 12-year-old offline software to OnePath in 2 days. The bi-directional interfacing alone saves my team 3 hours every single day. The NABL audit last month was the smoothest in our lab\'s history.' },
     { name: 'Ms. Sunita Sharma', lab: 'Wellness Path Labs, Jaipur', stars: 5, text: 'We run 7 branches across Rajasthan. Managing them all from one screen felt impossible before OnePath. Now I can see which branch is slow, which technician is behind TAT, and our revenue — all in real time.' },
     { name: 'Mr. Anil Mehta', lab: 'Apex Diagnostics, Mumbai', stars: 5, text: 'Our patient complaints about waiting for reports dropped to nearly zero after WhatsApp delivery went live. Patients actually text us to say thank you. Never happened before.' },
 ]
 
 const integrations = [
     { name: 'Razorpay', desc: 'Automate B2B & retail payments', color: '#3395ff' },
-    { name: 'AiSensy', desc: 'WhatsApp report delivery', color: '#25d366' },
+    { name: 'WhatsApp API', desc: 'Official report & bill delivery', color: '#25d366' },
     { name: 'ABHA / ABDM', desc: 'Health ID verification', color: '#0891b2' },
     { name: 'EkaCare', desc: 'Prescription sync', color: '#7c3aed' },
-    { name: 'Sysmex', desc: 'Analyzer interfacing', color: '#dc2626' },
+    { name: 'Sysmex', desc: 'Cell counter interfacing', color: '#dc2626' },
     { name: 'Roche Cobas', desc: 'Bi-directional interfacing', color: '#d97706' },
 ]
 
@@ -117,10 +117,11 @@ function CompCell({ val }: { val: boolean | string }) {
 export default function LISSoftware() {
     const [activeTab, setActiveTab] = useState(0)
     const statsRef = useInView()
-    const c1 = useCounter(2000, 2000, statsRef.inView)
+    // Realistic Stats Match
+    const c1 = useCounter(200, 200, statsRef.inView)
     const c2 = useCounter(10, 1800, statsRef.inView)
     const c3 = useCounter(99, 1600, statsRef.inView)
-    const c4 = useCounter(80, 1400, statsRef.inView)
+    const c4 = useCounter(200, 1400, statsRef.inView)
 
     return (
         <main style={{ background: '#ffffff', minHeight: '100vh', display: 'flex', flexDirection: 'column', overflowX: 'hidden' }}>
@@ -144,26 +145,26 @@ export default function LISSoftware() {
                     {/* Top badge */}
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 100, padding: '6px 18px', fontSize: 13, fontWeight: 600, color: '#2563eb', fontFamily: "'DM Sans',sans-serif", marginBottom: 28, boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
                         <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', display: 'inline-block', animation: 'pulse-dot 2s infinite' }} />
-                        India's Most Advanced Lab Information System
+                        India's Most Reliable Lab Information System
                     </div>
 
                     <h1 style={{ fontSize: 'clamp(40px, 6.5vw, 76px)', fontWeight: 800, color: '#0f172a', fontFamily: "'Syne',sans-serif", marginBottom: 24, letterSpacing: '-0.03em', lineHeight: 1.08 }}>
                         The Complete
                         <span style={{ display: 'block', background: 'linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                            LIS Software
+                            Cloud LIS Software
                         </span>
                         for Modern Labs
                     </h1>
 
                     <p style={{ fontSize: 'clamp(16px, 2vw, 20px)', color: '#475569', lineHeight: 1.75, fontFamily: "'DM Sans',sans-serif", maxWidth: 640, margin: '0 auto 44px' }}>
-                        Automate every step — from patient registration to WhatsApp report delivery. AI-powered, NABL-compliant, machine-integrated, and built for Indian diagnostic labs of every size.
+                        Automate every step — from patient registration to WhatsApp report delivery. NABL-compliant, machine-integrated, and built for Indian diagnostic labs of every size.
                     </p>
 
                     {/* CTA buttons */}
                     <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 56 }}>
                         {/* PRIMARY BUTTON — opens LIS software */}
                         <a
-                            href=""
+                            href="/dashboard/approved"
                             target="_blank"
                             rel="noreferrer"
                             style={{
@@ -178,7 +179,7 @@ export default function LISSoftware() {
                             onMouseEnter={e => { e.currentTarget.style.background = '#1d4ed8'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 36px rgba(37,99,235,0.5)' }}
                             onMouseLeave={e => { e.currentTarget.style.background = '#2563eb'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 8px 28px rgba(37,99,235,0.4)' }}
                         >
-                            <Cpu size={18} />
+                            <Server size={18} />
                             Open LIS Software
                             <ArrowRight size={16} />
                         </a>
@@ -209,9 +210,9 @@ export default function LISSoftware() {
                 <div ref={statsRef.ref} style={{ maxWidth: 1100, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px,1fr))', background: '#ffffff', borderRadius: 20, border: '1px solid #e2e8f0', boxShadow: '0 20px 60px -15px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
                     {[
                         { value: c1, suffix: '+', label: 'Labs Onboarded', sub: 'Across India & abroad', color: '#2563eb' },
-                        { value: c2, suffix: 'M+', label: 'Reports / Month', sub: 'Auto-generated by AI', color: '#7c3aed' },
+                        { value: c2, suffix: '0K+', label: 'Reports / Month', sub: 'Processed seamlessly', color: '#7c3aed' },
                         { value: c3, suffix: '.9%', label: 'Uptime SLA', sub: 'Enterprise reliability', color: '#059669' },
-                        { value: c4, suffix: '+', label: 'Analyzer Brands', sub: 'Machine interfacing', color: '#d97706' },
+                        { value: c4, suffix: '+', label: 'Analyzer Models', sub: 'Machine interfacing', color: '#d97706' },
                     ].map((s, i) => (
                         <div key={i} style={{ padding: '32px 20px', textAlign: 'center', borderRight: i < 3 ? '1px solid #f1f5f9' : 'none' }}>
                             <div style={{ fontSize: 40, fontWeight: 800, color: s.color, fontFamily: "'Syne',sans-serif", letterSpacing: '-0.03em', lineHeight: 1, marginBottom: 6 }}>
@@ -274,7 +275,7 @@ export default function LISSoftware() {
                                 <span style={{ color: '#7c3aed' }}> Isolated Universe</span>
                             </h2>
                             <p style={{ fontSize: 15.5, color: '#64748b', lineHeight: 1.8, fontFamily: "'DM Sans',sans-serif", marginBottom: 28 }}>
-                                2000+ labs run on the same OnePath infrastructure — yet no lab can ever see, touch, or affect another lab's data. This is enforced at the database level, not just the UI.
+                                200+ labs run on the same OnePath infrastructure — yet no lab can ever see, touch, or affect another lab's data. This is enforced at the database level, not just the UI.
                             </p>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                                 {multiTenancyPoints.map((p, i) => (
@@ -436,9 +437,9 @@ export default function LISSoftware() {
                         {[
                             { step: '01', icon: <Users size={18} />, title: 'Patient Registration', time: '< 60 seconds', desc: 'Receptionist registers patient with barcode generation. Referring doctor and corporate account auto-linked. SMS confirmation sent to patient instantly.', color: '#2563eb' },
                             { step: '02', icon: <FlaskConical size={18} />, title: 'Sample Collection & Accession', time: '< 2 minutes', desc: 'Barcode scanned at collection. Sample type, tube color, storage condition auto-suggested. Phlebotomist app tracks home collection in real-time.', color: '#7c3aed' },
-                            { step: '03', icon: <Microscope size={18} />, title: 'Machine Analysis (Auto)', time: 'Automated', desc: 'Results flow directly from analyzer to software via HL7/ASTM interfacing. No manual typing. AI engine flags critical values and abnormal patterns instantly.', color: '#059669' },
-                            { step: '04', icon: <Brain size={18} />, title: 'AI Verification & Interpretation', time: '< 30 seconds', desc: 'AI drafts clinical interpretation for each test. Technician reviews and approves with one click. Pathologist gets only critical cases for review — saving 3+ hours daily.', color: '#d97706' },
-                            { step: '05', icon: <FileText size={18} />, title: 'Pathologist Digital Approval', time: '< 2 minutes', desc: 'Doctor reviews AI-drafted report on mobile or desktop. Digital signature applied. Report locked — no edits possible post-approval.', color: '#0891b2' },
+                            { step: '03', icon: <Microscope size={18} />, title: 'Machine Analysis (Auto)', time: 'Automated', desc: 'Results flow directly from analyzer to software via HL7/ASTM interfacing. No manual typing. Rules engine flags critical values and abnormal patterns instantly.', color: '#059669' },
+                            { step: '04', icon: <AlertCircle size={18} />, title: 'Clinical Validation', time: '< 30 seconds', desc: 'Technician reviews fetched results. System highlights criticals in red. Derived parameters are auto-calculated without manual math.', color: '#d97706' },
+                            { step: '05', icon: <FileText size={18} />, title: 'Pathologist Digital Approval', time: '< 2 minutes', desc: 'Doctor reviews draft report on mobile or desktop. Digital signature applied. Report locked — no edits possible post-approval.', color: '#0891b2' },
                             { step: '06', icon: <MessageSquare size={18} />, title: 'Instant Report Delivery', time: '< 10 seconds', desc: 'Branded PDF automatically sent via WhatsApp + SMS + Email. Patient portal updated. Referring doctor\'s portal updated. Corporate client API notified.', color: '#dc2626' },
                         ].map((w, i) => (
                             <div key={i} style={{ position: 'relative', marginBottom: i < 5 ? 0 : 0, display: 'flex', gap: 24, paddingBottom: i < 5 ? 0 : 0 }}>
@@ -491,44 +492,6 @@ export default function LISSoftware() {
             </section>
 
             {/* ══════════════════════════════════════════
-          TESTIMONIALS
-      ══════════════════════════════════════════ */}
-            <section style={{ padding: '96px 20px', background: '#ffffff' }}>
-                <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-                    <div style={{ textAlign: 'center', marginBottom: 56 }}>
-                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#2563eb', background: '#eff6ff', border: '1px solid #dbeafe', padding: '5px 14px', borderRadius: 100, marginBottom: 16, fontFamily: "'DM Sans',sans-serif" }}>
-                            Real Reviews
-                        </span>
-                        <h2 style={{ fontSize: 'clamp(28px,4vw,44px)', fontWeight: 800, color: '#0f172a', fontFamily: "'Syne',sans-serif", letterSpacing: '-0.02em' }}>
-                            What Lab Owners Say
-                        </h2>
-                    </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px,1fr))', gap: 20 }}>
-                        {testimonials.map((t, i) => (
-                            <div key={i} style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 20, padding: '32px', display: 'flex', flexDirection: 'column', gap: 16, transition: 'all 0.2s ease' }}
-                                onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = '0 12px 40px -8px rgba(0,0,0,0.1)'; el.style.borderColor = '#bfdbfe'; el.style.transform = 'translateY(-2px)' }}
-                                onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = 'none'; el.style.borderColor = '#e2e8f0'; el.style.transform = 'translateY(0)' }}
-                            >
-                                <div style={{ display: 'flex', gap: 3 }}>
-                                    {Array.from({ length: t.stars }).map((_, j) => <Star key={j} size={14} fill="#f59e0b" color="#f59e0b" />)}
-                                </div>
-                                <p style={{ fontSize: 14.5, color: '#475569', lineHeight: 1.8, fontFamily: "'DM Sans',sans-serif", flex: 1, margin: 0 }}>"{t.text}"</p>
-                                <div style={{ paddingTop: 16, borderTop: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', gap: 12 }}>
-                                    <div style={{ width: 40, height: 40, borderRadius: '50%', background: ['#eff6ff', '#f5f3ff', '#ecfdf5'][i], display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15, fontWeight: 800, color: ['#2563eb', '#7c3aed', '#059669'][i], fontFamily: "'Syne',sans-serif", flexShrink: 0 }}>
-                                        {t.name.split(' ').pop()?.charAt(0)}
-                                    </div>
-                                    <div>
-                                        <div style={{ fontSize: 14, fontWeight: 700, color: '#0f172a', fontFamily: "'DM Sans',sans-serif" }}>{t.name}</div>
-                                        <div style={{ fontSize: 12, color: '#94a3b8', fontFamily: "'DM Sans',sans-serif" }}>{t.lab}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* ══════════════════════════════════════════
           FINAL CTA
       ══════════════════════════════════════════ */}
             <section style={{ padding: '96px 20px', background: 'linear-gradient(135deg, #1e40af 0%, #2563eb 60%, #3b82f6 100%)', position: 'relative', overflow: 'hidden' }}>
@@ -538,7 +501,7 @@ export default function LISSoftware() {
                 <div style={{ maxWidth: 740, margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 1 }}>
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)', borderRadius: 100, padding: '6px 18px', fontSize: 13, fontWeight: 600, color: '#ffffff', fontFamily: "'DM Sans',sans-serif", marginBottom: 28 }}>
                         <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', display: 'inline-block' }} />
-                        No credit card · 5-day free trial · Cancel anytime
+                        No credit card · 1-months free trial · Cancel anytime
                     </div>
 
                     <h2 style={{ fontSize: 'clamp(32px,5vw,56px)', fontWeight: 800, color: '#ffffff', fontFamily: "'Syne',sans-serif", marginBottom: 16, letterSpacing: '-0.03em', lineHeight: 1.1 }}>
@@ -546,16 +509,16 @@ export default function LISSoftware() {
                         <br />Your Lab?
                     </h2>
                     <p style={{ fontSize: 18, color: 'rgba(255,255,255,0.8)', lineHeight: 1.7, fontFamily: "'DM Sans',sans-serif", marginBottom: 44, maxWidth: 520, margin: '0 auto 44px' }}>
-                        Join 2000+ labs already running on OnePath. Get set up in 24 hours with full migration support — completely free.
+                        Join 200+ labs already running on OnePath. Get set up in 24 hours with full migration support — completely free.
                     </p>
 
                     <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
-                        <a href="" target="_blank" rel="noreferrer"
+                        <a href="/dashboard/approved" target="_blank" rel="noreferrer"
                             style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: '#ffffff', color: '#1d4ed8', textDecoration: 'none', fontWeight: 800, fontSize: 16, padding: '16px 36px', borderRadius: 50, fontFamily: "'DM Sans',sans-serif", boxShadow: '0 8px 32px rgba(0,0,0,0.2)', transition: 'all 0.2s ease' }}
                             onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.3)' }}
                             onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.2)' }}
                         >
-                            <Cpu size={18} />
+                            <Server size={18} />
                             Open LIS Software
                             <ArrowRight size={16} />
                         </a>

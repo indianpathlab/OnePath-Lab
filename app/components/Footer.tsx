@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Phone, Mail } from 'lucide-react'
+import { Phone, Mail, MapPin, ShieldCheck, Award, Lock } from 'lucide-react'
 
 const footerLinks = {
     Company: [
@@ -40,16 +40,17 @@ export default function Footer() {
             background: '#ffffff',
             borderTop: '1px solid #e2e8f0', 
         }}>
-            <div className="container" style={{ padding: '80px 24px 48px', maxWidth: '1200px' }}>
+            <div className="container" style={{ padding: '80px 24px 48px', maxWidth: '1200px', margin: '0 auto' }}>
                 <div className="footer-grid">
 
+                    {/* Brand & Certifications Column */}
                     <div className="footer-brand">
                         <Link href="/" style={{
                             display: 'flex',
                             alignItems: 'center',
                             gap: 12,
                             textDecoration: 'none',
-                            marginBottom: 24,
+                            marginBottom: 20,
                             width: 'fit-content'
                         }}>
                             <Image
@@ -74,12 +75,81 @@ export default function Footer() {
                             fontSize: 15,
                             color: '#64748b',
                             lineHeight: 1.7,
-                            marginBottom: 32,
+                            marginBottom: 28,
                             fontFamily: "'DM Sans', sans-serif",
                             maxWidth: 320,
                         }}>
-                            AI-powered pathology lab management software trusted by 2000+ labs across India. Automate. Grow. Scale.
+                            Enterprise-grade Laboratory Information System (LIS) trusted by 200+ diagnostic centers across India. Automate. Grow. Scale.
                         </p>
+
+                        {/* Certification Badges */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                            <div className="cert-badge">
+                                <Award size={14} color="#059669" />
+                                <span>ISO 27001:2022 Certified</span>
+                            </div>
+                            <div className="cert-badge">
+                                <ShieldCheck size={14} color="#3b82f6" />
+                                <span>HIPAA Compliant Data Security</span>
+                            </div>
+                            <div className="cert-badge">
+                                <Lock size={14} color="#8b5cf6" />
+                                <span>End-to-End Encrypted Cloud</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Offices Column */}
+                    <div className="footer-offices">
+                        <h4 className="footer-heading">Our Offices</h4>
+                        
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+                            {/* HQ */}
+                            <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                                <MapPin size={18} color="var(--blue-primary)" style={{ marginTop: 2, flexShrink: 0 }} />
+                                <div>
+                                    <div style={{ fontSize: 14, fontWeight: 700, color: '#0f172a', fontFamily: "'DM Sans', sans-serif", marginBottom: 4 }}>Corporate Head Quarters</div>
+                                    <div style={{ fontSize: 14, color: '#475569', lineHeight: 1.6, fontFamily: "'DM Sans', sans-serif" }}>
+                                        Street No 04, Tibba Road,<br/>
+                                        Mayapuri Chowk, Ludhiana Punjab 141007
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {/* Branch */}
+                            <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                                <MapPin size={18} color="var(--blue-primary)" style={{ marginTop: 2, flexShrink: 0 }} />
+                                <div>
+                                    <div style={{ fontSize: 14, fontWeight: 700, color: '#0f172a', fontFamily: "'DM Sans', sans-serif", marginBottom: 4 }}>Branch Office</div>
+                                    <div style={{ fontSize: 14, color: '#475569', lineHeight: 1.6, fontFamily: "'DM Sans', sans-serif" }}>
+                                        Main Market, Ambehta Peer,<br/>
+                                        Saharanpur, Uttar Pradesh 247340
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Contact & Social Column */}
+                    <div className="footer-contact">
+                        <h4 className="footer-heading">Get in Touch</h4>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 28 }}>
+                            {[
+                                { icon: <Phone size={16} />, text: 'Sales: +91 9897198999' },
+                                { icon: <Phone size={16} />, text: 'Support: +91 9045757272' },
+                                { icon: <Mail size={16} />, text: 'support@onepathlab.com' },
+                            ].map((c, i) => (
+                                <div key={i} style={{
+                                    display: 'flex', gap: 12, alignItems: 'center',
+                                    fontSize: 14, color: '#475569',
+                                    fontFamily: "'DM Sans', sans-serif",
+                                    fontWeight: 500,
+                                }}>
+                                    <span style={{ color: 'var(--blue-primary)' }}>{c.icon}</span>
+                                    {c.text}
+                                </div>
+                            ))}
+                        </div>
 
                         {/* Social icons */}
                         <div style={{ display: 'flex', gap: 12 }}>
@@ -89,34 +159,7 @@ export default function Footer() {
                                     href={s.href}
                                     target="_blank"
                                     rel="noreferrer"
-                                    style={{
-                                        width: 40, height: 40,
-                                        borderRadius: 10,
-                                        background: '#f1f5f9',
-                                        border: '1px solid #e2e8f0',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        color: '#64748b',
-                                        textDecoration: 'none',
-                                        transition: 'all 0.2s',
-                                    }}
-                                    onMouseEnter={e => {
-                                        const el = e.currentTarget as HTMLAnchorElement
-                                        el.style.background = 'var(--blue-primary)'
-                                        el.style.color = '#ffffff'
-                                        el.style.borderColor = 'var(--blue-primary)'
-                                        el.style.transform = 'translateY(-2px)'
-                                        el.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)'
-                                    }}
-                                    onMouseLeave={e => {
-                                        const el = e.currentTarget as HTMLAnchorElement
-                                        el.style.background = '#f1f5f9'
-                                        el.style.color = '#64748b'
-                                        el.style.borderColor = '#e2e8f0'
-                                        el.style.transform = 'translateY(0)'
-                                        el.style.boxShadow = 'none'
-                                    }}
+                                    className="social-icon-btn"
                                 >
                                     {s.icon}
                                 </a>
@@ -124,59 +167,17 @@ export default function Footer() {
                         </div>
                     </div>
 
-                    {/* Contact Info Column (Middle) */}
-                    <div className="footer-contact">
-                        <h4 style={{
-                            fontSize: 14,
-                            fontWeight: 700,
-                            letterSpacing: '0.08em',
-                            textTransform: 'uppercase',
-                            color: '#0f172a',
-                            marginBottom: 24,
-                            fontFamily: "'Syne', sans-serif",
-                        }}>
-                            Contact Us
-                        </h4>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                            {[
-                                { icon: <Phone size={16} />, text: 'Sales: +91 92173 27134' },
-                                { icon: <Phone size={16} />, text: 'Support: +91 72539 28905' },
-                                { icon: <Mail size={16} />, text: 'hello@onepath.in' },
-                            ].map((c, i) => (
-                                <div key={i} style={{
-                                    display: 'flex', gap: 12, alignItems: 'center',
-                                    fontSize: 15, color: '#475569',
-                                    fontFamily: "'DM Sans', sans-serif",
-                                    fontWeight: 500,
-                                }}>
-                                    <span style={{ color: 'var(--blue-primary)' }}>{c.icon}</span>
-                                    {c.text}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Company Links Column (Right) */}
+                    {/* Company Links Column */}
                     {Object.entries(footerLinks).map(([heading, links]) => (
                         <div key={heading} className="footer-links">
-                            <h4 style={{
-                                fontSize: 14,
-                                fontWeight: 700,
-                                letterSpacing: '0.08em',
-                                textTransform: 'uppercase',
-                                color: '#0f172a',
-                                marginBottom: 24,
-                                fontFamily: "'Syne', sans-serif",
-                            }}>
-                                {heading}
-                            </h4>
+                            <h4 className="footer-heading">{heading}</h4>
                             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 14, padding: 0 }}>
                                 {links.map(link => (
                                     <li key={link.label}>
                                         <Link
                                             href={link.href}
                                             style={{
-                                                fontSize: 15,
+                                                fontSize: 14,
                                                 fontWeight: 500,
                                                 color: '#64748b',
                                                 textDecoration: 'none',
@@ -204,6 +205,7 @@ export default function Footer() {
             }}>
                 <div className="container" style={{
                     maxWidth: '1200px',
+                    margin: '0 auto',
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
@@ -236,22 +238,65 @@ export default function Footer() {
                 </div>
             </div>
 
-            <style>{`
-                /* Desktop Layout: 3 Columns (Brand, Contact, Links) */
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                /* Desktop Layout: 4 Columns (Brand, Offices, Contact, Links) */
                 .footer-grid {
                     display: grid;
-                    grid-template-columns: 2fr 1fr 1fr;
+                    grid-template-columns: 1.5fr 1.2fr 1fr 0.8fr;
                     gap: 48px;
                 }
 
+                .footer-heading {
+                    font-size: 14px;
+                    font-weight: 700;
+                    letter-spacing: 0.08em;
+                    text-transform: uppercase;
+                    color: #0f172a;
+                    margin-bottom: 28px; /* Fixed spacing here */
+                    font-family: 'Syne', sans-serif;
+                }
+
+                .cert-badge {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 6px 12px;
+                    background: #f8fafc;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 100px;
+                    font-size: 12px;
+                    font-weight: 600;
+                    color: #475569;
+                    font-family: 'DM Sans', sans-serif;
+                    width: fit-content;
+                }
+
+                .social-icon-btn {
+                    width: 40px; height: 40px;
+                    border-radius: 10px;
+                    background: #f1f5f9;
+                    border: 1px solid #e2e8f0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: #64748b;
+                    text-decoration: none;
+                    transition: all 0.2s;
+                }
+                .social-icon-btn:hover {
+                    background: var(--blue-primary);
+                    color: #ffffff;
+                    border-color: var(--blue-primary);
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+                }
+
                 /* Tablet Layout */
-                @media (max-width: 900px) {
+                @media (max-width: 1024px) {
                     .footer-grid {
                         grid-template-columns: 1fr 1fr;
                         row-gap: 48px;
-                    }
-                    .footer-brand {
-                        grid-column: span 2; /* Brand takes full width on top */
                     }
                 }
 
@@ -261,11 +306,8 @@ export default function Footer() {
                         grid-template-columns: 1fr;
                         gap: 40px;
                     }
-                    .footer-brand {
-                        grid-column: span 1;
-                    }
                 }
-            `}</style>
+            `}} />
         </footer>
     )
 }

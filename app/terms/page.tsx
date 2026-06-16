@@ -17,7 +17,7 @@ const sections = [
         title: '2. Account Registration & Responsibilities',
         content: [
             { head: 'Accurate Information', body: 'You must provide accurate, current, and complete information during registration. Labs are required to submit a valid NABL certificate or Clinical Establishment registration number. Providing false information may result in immediate account termination.' },
-            { head: 'Account Security', body: 'You are responsible for maintaining the confidentiality of your login credentials. You must immediately notify us at security@onepath.in of any unauthorized access to your account. We are not liable for losses resulting from compromised credentials due to your negligence.' },
+            { head: 'Account Security', body: 'You are responsible for maintaining the confidentiality of your login credentials. You must immediately notify us at support@onepathlab.com of any unauthorized access to your account. We are not liable for losses resulting from compromised credentials due to your negligence.' },
             { head: 'User Roles & Access', body: 'As an admin, you are responsible for managing the access levels of your lab staff. You must promptly revoke access for staff who leave your organization. OnePath Lab is not liable for data access by ex-employees whose credentials were not revoked in a timely manner.' },
             { head: 'One Account per Lab Center', body: 'Each physical lab location requires a separate account or must be added as a branch under your multi-center plan. Running multiple labs from a single account without a multi-branch subscription violates these Terms.' },
         ],
@@ -138,9 +138,7 @@ export default function TermsAndConditions() {
                                 For questions about these Terms, data processing agreements, or enterprise compliance requirements, contact our legal team. We respond within 1 business day.
                             </p>
                             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-                                <a href="mailto:legal@onepath.in" style={{ fontSize: 14.5, fontWeight: 600, color: '#2563eb', textDecoration: 'none', fontFamily: "'DM Sans',sans-serif" }}>legal@onepath.in</a>
-                                <span style={{ color: '#cbd5e1' }}>·</span>
-                                <a href="mailto:hello@onepath.in" style={{ fontSize: 14.5, fontWeight: 600, color: '#2563eb', textDecoration: 'none', fontFamily: "'DM Sans',sans-serif" }}>hello@onepath.in</a>
+                                <a href="mailto:legal@onepath.in" style={{ fontSize: 14.5, fontWeight: 600, color: '#2563eb', textDecoration: 'none', fontFamily: "'DM Sans',sans-serif" }}>support@onepathlab.com</a>
                             </div>
                         </div>
                     </div>

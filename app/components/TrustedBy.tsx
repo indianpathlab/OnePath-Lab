@@ -3,11 +3,8 @@ import React from 'react'
 
 export default function TrustedBy() {
     const logos = [
-        'Agglom Diagnostics', 'C2P Lab', 'Wellness Diagnostics',
-        'Diagnocare', 'The Ashoka', 'Carephill', 'Citi Medicare',
-        'Diagnowings', "Dr. Mufti's", 'Genomia', 'Gruha',
-        'HMD Labs', 'Labbix', 'Metro Lab', 'Nucleus',
-        'Olive', 'Omega Path', 'Vetlife', 'Bilasa',
+        'Indian Path Lab', 'Star Pathology Lab', 'Nosran Diagnostics',
+        'Max Hospital', 'Saksham Hospital', 'Darul Shifa Clinic', 'Zarrah Clinic', 'New Life Nursing Home'
     ]
 
     const allLogos = [...logos, ...logos]
@@ -30,7 +27,7 @@ export default function TrustedBy() {
                 color: '#64748b',
                 fontFamily: "'DM Sans', sans-serif",
             }}>
-                Trusted by 2000+ diagnostic labs across India
+                Trusted by 200+ diagnostic labs across India
             </div>
 
             <div className="scroll-container" style={{
@@ -57,7 +54,7 @@ export default function TrustedBy() {
                     style={{
                         display: 'flex',
                         width: 'max-content',
-                        animation: 'scrollLeft 40s linear infinite' 
+                        animation: 'scrollLeft 40s linear infinite'
                     }}
                 >
                     {allLogos.map((name, i) => (

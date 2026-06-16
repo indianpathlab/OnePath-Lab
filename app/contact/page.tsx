@@ -2,28 +2,28 @@
 import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import { Mail, Phone, MapPin, MessageCircle, Clock, CheckCircle, ArrowRight, Send } from 'lucide-react'
+import { Mail, Phone, MapPin, MessageCircle, Clock, CheckCircle, Headphones, Settings, UserCog } from 'lucide-react'
 
 const contactCards = [
     {
         icon: <Phone size={22} />, title: 'Sales Enquiry', sub: 'Talk to our sales team', color: '#2563eb', bg: '#eff6ff',
-        lines: ['+91 92173 27134', '+91 72539 28905'],
-        note: 'Mon–Sat, 9 AM to 8 PM IST',
+        lines: ['+91 9045757272', '+91 9058459848'],
+        note: 'Mon–Sat, 8 AM to 9 PM IST',
     },
     {
         icon: <Mail size={22} />, title: 'Email Us', sub: 'We reply within 2 hours', color: '#7c3aed', bg: '#f5f3ff',
-        lines: ['hello@onepath.in', 'support@onepath.in'],
-        note: 'For billing queries: billing@onepath.in',
+        lines: ['support@onepathlab.com'],
+        note: 'For billing queries: support@onepathlab.com',
     },
     {
         icon: <MapPin size={22} />, title: 'Visit Us', sub: 'Head office', color: '#059669', bg: '#ecfdf5',
-        lines: ['Plot 12, Sector 20A', 'Faridabad, Haryana 121001'],
+        lines: ['Street No 04, Tibba Road', 'Mayapuri Chowk, Ludhiana Punjab 141007'],
         note: 'By appointment only',
     },
     {
         icon: <Clock size={22} />, title: 'Support Hours', sub: 'Technical support', color: '#d97706', bg: '#fffbeb',
-        lines: ['Mon–Sat: 9 AM – 10 PM', 'Sunday: 10 AM – 6 PM'],
-        note: 'Emergency line: 24×7',
+        lines: ['Mon–Sat: 8 AM – 9 PM', 'Sunday: 10 AM – 6 PM'],
+        note: 'Emergency line: 24×7 for active clients',
     },
 ]
 
@@ -63,13 +63,7 @@ const faqs = [
 ]
 
 export default function ContactSupport() {
-    const [formData, setFormData] = useState({ lab: '', name: '', phone: '', email: '', city: '', message: '', type: 'Demo Request' })
-    const [submitted, setSubmitted] = useState(false)
     const [openFaq, setOpenFaq] = useState<number | null>(null)
-
-    const handleSubmit = () => {
-        if (formData.lab && formData.phone) setSubmitted(true)
-    }
 
     return (
         <main style={{ background: '#ffffff', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -85,13 +79,13 @@ export default function ContactSupport() {
                 <div style={{ maxWidth: 760, margin: '0 auto', position: 'relative', zIndex: 1 }}>
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 100, padding: '6px 18px', fontSize: 13, fontWeight: 600, color: '#2563eb', fontFamily: "'DM Sans',sans-serif", marginBottom: 28, boxShadow: '0 2px 10px rgba(0,0,0,0.06)' }}>
                         <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', display: 'inline-block' }} />
-                        We respond within 2 hours
+                        Sales & Support Infrastructure
                     </div>
                     <h1 style={{ fontSize: 'clamp(40px,6vw,62px)', fontWeight: 800, color: '#0f172a', fontFamily: "'Syne',sans-serif", marginBottom: 20, letterSpacing: '-0.03em', lineHeight: 1.1 }}>
-                        Let's Talk About<br /><span style={{ color: '#2563eb' }}>Your Lab's Growth</span>
+                        We're Here to<br /><span style={{ color: '#2563eb' }}>Help You Scale</span>
                     </h1>
                     <p style={{ fontSize: 'clamp(16px,2vw,18px)', color: '#475569', lineHeight: 1.75, fontFamily: "'DM Sans',sans-serif" }}>
-                        Whether you want a live demo, need migration help, or have a billing question — our team is here. No chatbots, no ticket queues. Real humans, real answers.
+                        Whether you need a personalized product demo, data migration assistance, or immediate technical support — our certified LIS experts are just a call or message away.
                     </p>
                 </div>
             </section>
@@ -117,100 +111,105 @@ export default function ContactSupport() {
                 </div>
             </section>
 
-            {/* ── Form + WhatsApp ── */}
+            {/* ── WhatsApp + Support Architecture ── */}
             <section style={{ padding: '80px 20px 96px' }}>
                 <div style={{ maxWidth: 1100, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1.3fr', gap: 48, alignItems: 'start' }} className="contact-grid">
 
-                    {/* Left */}
+                    {/* Left: Quick Chat & Trust Points */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
                         <div>
                             <h2 style={{ fontSize: 30, fontWeight: 800, color: '#0f172a', fontFamily: "'Syne',sans-serif", marginBottom: 12, letterSpacing: '-0.02em' }}>
-                                Prefer a Quick Chat?
+                                Need Immediate Help?
                             </h2>
                             <p style={{ fontSize: 15, color: '#64748b', lineHeight: 1.75, fontFamily: "'DM Sans',sans-serif" }}>
-                                Our team is active on WhatsApp from 9 AM to 10 PM. Send a message and get a response within minutes.
+                                For immediate queries, migration planning, or software demonstrations, drop us a message on our official WhatsApp channel.
                             </p>
                         </div>
 
-                        <a href="https://wa.me/919266837566?text=Hi%2C%20I%20want%20to%20know%20more%20about%20OnePath%20Lab%20software" target="_blank" rel="noreferrer"
+                        <a href="https://wa.me/919045757272?text=Hi%2C%20I%20want%20to%20know%20more%20about%20OnePath%20Lab%20software" target="_blank" rel="noreferrer"
                             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, background: '#22c55e', color: '#ffffff', textDecoration: 'none', fontWeight: 700, fontSize: 16, padding: '18px 24px', borderRadius: 16, fontFamily: "'DM Sans',sans-serif", boxShadow: '0 8px 28px rgba(34,197,94,0.35)', transition: 'all 0.2s' }}>
                             <MessageCircle size={22} />
-                            Chat on WhatsApp Now
+                            Chat with Sales / Support
                         </a>
 
                         {/* Trust points */}
-                        <div style={{ background: '#f8fafc', borderRadius: 16, padding: '24px' }}>
-                            <div style={{ fontSize: 13, fontWeight: 700, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', fontFamily: "'DM Sans',sans-serif", marginBottom: 16 }}>Why labs choose us</div>
+                        <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 16, padding: '24px' }}>
+                            <div style={{ fontSize: 13, fontWeight: 700, color: '#94a3b8', letterSpacing: '0.08em', textTransform: 'uppercase', fontFamily: "'DM Sans',sans-serif", marginBottom: 16 }}>Our Service Commitment</div>
                             {[
-                                'Free onboarding & migration support',
-                                'Dedicated account manager for 3 months',
-                                'No long-term contract — cancel anytime',
-                                'Response SLA: under 2 hours on weekdays',
-                                'Training for your entire team — included',
+                                'Free onboarding & zero-loss data migration',
+                                'Dedicated account manager for first 3 months',
+                                'No long-term contracts — cancel anytime',
+                                'Response SLA: Under 15 mins on active channels',
+                                'Unlimited training sessions for your staff',
                             ].map((pt, i) => (
-                                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 14, color: '#334155', fontFamily: "'DM Sans',sans-serif", fontWeight: 500, marginBottom: 12 }}>
-                                    <CheckCircle size={15} color="#22c55e" style={{ flexShrink: 0 }} />
+                                <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 14, color: '#334155', fontFamily: "'DM Sans',sans-serif", fontWeight: 500, marginBottom: 12 }}>
+                                    <CheckCircle size={16} color="#22c55e" style={{ flexShrink: 0, marginTop: 2 }} />
                                     {pt}
                                 </div>
                             ))}
                         </div>
                     </div>
 
-                    {/* Right — Form */}
+                    {/* Right — Enterprise Support Escalation Matrix */}
                     <div style={{ background: '#ffffff', borderRadius: 24, padding: '40px', border: '1px solid #e2e8f0', boxShadow: '0 20px 60px -15px rgba(0,0,0,0.08)' }}>
-                        {submitted ? (
-                            <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-                                <div style={{ width: 72, height: 72, background: '#dcfce7', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
-                                    <CheckCircle size={36} color="#16a34a" />
+                        <h2 style={{ fontSize: 22, fontWeight: 800, color: '#0f172a', fontFamily: "'Syne',sans-serif", marginBottom: 6, letterSpacing: '-0.02em' }}>Enterprise Support Architecture</h2>
+                        <p style={{ fontSize: 14, color: '#64748b', fontFamily: "'DM Sans',sans-serif", marginBottom: 32, lineHeight: 1.6 }}>
+                            We don't just sell software; we partner in your operations. Our 3-tier support system ensures your lab never faces downtime.
+                        </p>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+                            {/* L1 Support */}
+                            <div style={{ display: 'flex', gap: 16 }}>
+                                <div style={{ width: 48, height: 48, borderRadius: 14, background: '#eff6ff', color: '#2563eb', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                    <Headphones size={22} />
                                 </div>
-                                <h3 style={{ fontSize: 24, fontWeight: 800, color: '#0f172a', fontFamily: "'Syne',sans-serif", marginBottom: 12 }}>Request Received!</h3>
-                                <p style={{ fontSize: 15, color: '#64748b', lineHeight: 1.7, fontFamily: "'DM Sans',sans-serif", marginBottom: 28 }}>
-                                    Our team will call you within 2 hours on the number you've provided. We'll be ready to give you a live personalized demo.
-                                </p>
-                                <button onClick={() => setSubmitted(false)} style={{ background: '#eff6ff', color: '#2563eb', border: 'none', padding: '12px 28px', borderRadius: 50, fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: "'DM Sans',sans-serif" }}>
-                                    Submit Another Request
-                                </button>
+                                <div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 4 }}>
+                                        <h4 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: '#0f172a', fontFamily: "'Syne',sans-serif" }}>L1 Helpdesk & Training</h4>
+                                        <span style={{ fontSize: 11, fontWeight: 700, background: '#dcfce7', color: '#16a34a', padding: '2px 8px', borderRadius: 100, fontFamily: "'DM Sans',sans-serif" }}>&lt; 15 Min SLA</span>
+                                    </div>
+                                    <p style={{ fontSize: 14, color: '#475569', lineHeight: 1.6, margin: 0, fontFamily: "'DM Sans',sans-serif" }}>
+                                        For day-to-day operational queries, report template adjustments, billing issues, and immediate staff training needs.
+                                    </p>
+                                </div>
                             </div>
-                        ) : (
-                            <>
-                                <h2 style={{ fontSize: 22, fontWeight: 800, color: '#0f172a', fontFamily: "'Syne',sans-serif", marginBottom: 6, letterSpacing: '-0.02em' }}>Request a Free Demo</h2>
-                                <p style={{ fontSize: 14, color: '#94a3b8', fontFamily: "'DM Sans',sans-serif", marginBottom: 28 }}>Fill in your details and we'll call you within 2 hours.</p>
 
-                                {/* Enquiry type */}
-                                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 24 }}>
-                                    {['Demo Request', 'Migration Help', 'Pricing Query', 'Technical Support'].map(type => (
-                                        <button key={type} onClick={() => setFormData(f => ({ ...f, type }))}
-                                            style={{ padding: '7px 16px', borderRadius: 50, fontSize: 13, fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', fontFamily: "'DM Sans',sans-serif", border: '1.5px solid', borderColor: formData.type === type ? '#2563eb' : '#e2e8f0', background: formData.type === type ? '#eff6ff' : '#ffffff', color: formData.type === type ? '#2563eb' : '#64748b' }}>
-                                            {type}
-                                        </button>
-                                    ))}
-                                </div>
+                            <div style={{ height: 1, background: '#f1f5f9', width: '100%' }} />
 
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                                    <InputField label="Lab Name *" placeholder="e.g. Sharma Diagnostics" value={formData.lab} onChange={v => setFormData(f => ({ ...f, lab: v }))} />
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }} className="form-grid">
-                                        <InputField label="Your Name" placeholder="Dr. / Mr. / Ms." value={formData.name} onChange={v => setFormData(f => ({ ...f, name: v }))} />
-                                        <InputField label="Phone Number *" placeholder="+91 9XXXXXXXXX" value={formData.phone} onChange={v => setFormData(f => ({ ...f, phone: v }))} type="tel" />
-                                    </div>
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }} className="form-grid">
-                                        <InputField label="Email Address" placeholder="you@lab.com" value={formData.email} onChange={v => setFormData(f => ({ ...f, email: v }))} type="email" />
-                                        <InputField label="City / State" placeholder="e.g. Faridabad, HR" value={formData.city} onChange={v => setFormData(f => ({ ...f, city: v }))} />
-                                    </div>
-                                    <div>
-                                        <label style={{ display: 'block', fontSize: 13.5, fontWeight: 600, color: '#475569', marginBottom: 7, fontFamily: "'DM Sans',sans-serif" }}>Message (optional)</label>
-                                        <textarea rows={3} placeholder="Tell us about your lab — current software, daily volume, specific challenges..." value={formData.message} onChange={e => setFormData(f => ({ ...f, message: e.target.value }))}
-                                            style={{ width: '100%', padding: '13px 15px', borderRadius: 12, border: '1.5px solid #e2e8f0', outline: 'none', fontSize: 14.5, fontFamily: "'DM Sans',sans-serif", resize: 'none', transition: 'border-color 0.2s', color: '#0f172a' }}
-                                            onFocus={e => e.target.style.borderColor = '#2563eb'}
-                                            onBlur={e => e.target.style.borderColor = '#e2e8f0'}
-                                        />
-                                    </div>
-                                    <button onClick={handleSubmit}
-                                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: '#2563eb', color: '#fff', border: 'none', padding: '16px', borderRadius: 12, fontSize: 15, fontWeight: 700, fontFamily: "'DM Sans',sans-serif", cursor: 'pointer', boxShadow: '0 4px 16px rgba(37,99,235,0.35)', transition: 'all 0.2s', marginTop: 4 }}>
-                                        <Send size={16} /> Submit Request
-                                    </button>
+                            {/* L2 Support */}
+                            <div style={{ display: 'flex', gap: 16 }}>
+                                <div style={{ width: 48, height: 48, borderRadius: 14, background: '#f5f3ff', color: '#7c3aed', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                    <Settings size={22} />
                                 </div>
-                            </>
-                        )}
+                                <div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 4 }}>
+                                        <h4 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: '#0f172a', fontFamily: "'Syne',sans-serif" }}>L2 Clinical Engineering</h4>
+                                        <span style={{ fontSize: 11, fontWeight: 700, background: '#fef3c7', color: '#d97706', padding: '2px 8px', borderRadius: 100, fontFamily: "'DM Sans',sans-serif" }}>&lt; 2 Hr SLA</span>
+                                    </div>
+                                    <p style={{ fontSize: 14, color: '#475569', lineHeight: 1.6, margin: 0, fontFamily: "'DM Sans',sans-serif" }}>
+                                        For machine interfacing errors, bi-directional connectivity setup, complex API integrations, and database migrations.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div style={{ height: 1, background: '#f1f5f9', width: '100%' }} />
+
+                            {/* L3 Support */}
+                            <div style={{ display: 'flex', gap: 16 }}>
+                                <div style={{ width: 48, height: 48, borderRadius: 14, background: '#ecfdf5', color: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                    <UserCog size={22} />
+                                </div>
+                                <div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 4 }}>
+                                        <h4 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: '#0f172a', fontFamily: "'Syne',sans-serif" }}>L3 Account Management</h4>
+                                        <span style={{ fontSize: 11, fontWeight: 700, background: '#f1f5f9', color: '#475569', padding: '2px 8px', borderRadius: 100, fontFamily: "'DM Sans',sans-serif" }}>Direct Line</span>
+                                    </div>
+                                    <p style={{ fontSize: 14, color: '#475569', lineHeight: 1.6, margin: 0, fontFamily: "'DM Sans',sans-serif" }}>
+                                        Your dedicated Success Manager for multi-branch scaling, custom feature requests, enterprise contract renewals, and strategic planning.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -230,7 +229,8 @@ export default function ContactSupport() {
                                     <span style={{ fontSize: 15.5, fontWeight: 700, color: '#0f172a', fontFamily: "'Syne',sans-serif", textAlign: 'left' }}>{faq.q}</span>
                                     <span style={{ fontSize: 20, color: '#2563eb', fontWeight: 300, flexShrink: 0, transform: openFaq === i ? 'rotate(45deg)' : 'rotate(0)', transition: 'transform 0.3s', lineHeight: 1 }}>+</span>
                                 </button>
-                                <div style={{ maxHeight: openFaq === i ? 200 : 0, overflow: 'hidden', transition: 'max-height 0.35s cubic-bezier(0.4,0,0.2,1)' }}>
+                                {/* Changed maxHeight to 1000px to avoid text clipping on large answers */}
+                                <div style={{ maxHeight: openFaq === i ? 1000 : 0, overflow: 'hidden', transition: 'max-height 0.4s cubic-bezier(0.4,0,0.2,1)' }}>
                                     <p style={{ padding: '0 24px 20px', fontSize: 14.5, color: '#64748b', lineHeight: 1.75, fontFamily: "'DM Sans',sans-serif", margin: 0 }}>{faq.a}</p>
                                 </div>
                             </div>
@@ -243,23 +243,9 @@ export default function ContactSupport() {
 
             <style>{`
         @media (max-width: 768px) {
-          .contact-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
-          .form-grid { grid-template-columns: 1fr !important; }
+          .contact-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
         }
       `}</style>
         </main>
-    )
-}
-
-function InputField({ label, placeholder, value, onChange, type = 'text' }: { label: string; placeholder: string; value: string; onChange: (v: string) => void; type?: string }) {
-    return (
-        <div>
-            <label style={{ display: 'block', fontSize: 13.5, fontWeight: 600, color: '#475569', marginBottom: 7, fontFamily: "'DM Sans',sans-serif" }}>{label}</label>
-            <input type={type} placeholder={placeholder} value={value} onChange={e => onChange(e.target.value)}
-                style={{ width: '100%', padding: '13px 15px', borderRadius: 12, border: '1.5px solid #e2e8f0', outline: 'none', fontSize: 14.5, fontFamily: "'DM Sans',sans-serif", transition: 'border-color 0.2s', color: '#0f172a', background: '#ffffff' }}
-                onFocus={e => e.target.style.borderColor = '#2563eb'}
-                onBlur={e => e.target.style.borderColor = '#e2e8f0'}
-            />
-        </div>
     )
 }

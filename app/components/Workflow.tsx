@@ -1,36 +1,36 @@
 'use client'
-import { Server, Cpu, UserCheck, Stethoscope, Send } from 'lucide-react'
+import { Server, AlertCircle, UserCheck, FileSignature, Send } from 'lucide-react'
 
 const steps = [
     {
         number: '01',
         icon: <Server size={22} />,
-        title: 'Receive Results from Machine',
-        desc: 'Test data is automatically fetched from lab analyzers via machine interfacing — no manual entry required.',
+        title: 'Direct Machine Integration',
+        desc: 'Test data is automatically fetched from cell counters and biochemistry analyzers, eliminating manual entry completely.',
     },
     {
         number: '02',
-        icon: <Cpu size={22} />,
-        title: 'AI Verification',
-        desc: 'AI engine checks for abnormalities and flags any critical values in real-time before human review.',
+        icon: <AlertCircle size={22} />,
+        title: 'Auto-Flagging & Calculation',
+        desc: 'System automatically calculates derived parameters and highlights abnormal values in red based on age/gender reference ranges.',
     },
     {
         number: '03',
         icon: <UserCheck size={22} />,
-        title: 'Technician Verification',
-        desc: 'Lab technician validates machine results and ensures correctness with a single click.',
+        title: 'Technician Review',
+        desc: 'Lab technicians cross-verify fetched results, input any manual parameters, and prepare the draft report.',
     },
     {
         number: '04',
-        icon: <Stethoscope size={22} />,
-        title: 'Doctor Approval with AI Interpretations',
-        desc: 'Pathologist reviews reports with AI-drafted interpretations, edits, and gives final digital approval.',
+        icon: <FileSignature size={22} />,
+        title: 'Digital Approval',
+        desc: 'Pathologists review the draft, add specific clinical notes if needed, and authorize the report with a secure digital signature.',
     },
     {
         number: '05',
         icon: <Send size={22} />,
-        title: 'Report Delivery',
-        desc: 'Reports instantly delivered to patient portal via WhatsApp, SMS, Email — automatically.',
+        title: 'Automated Dispatch',
+        desc: 'Final PDF reports with QR codes are instantly delivered to the patient’s and doctor’s WhatsApp, SMS, and email.',
     },
 ]
 
@@ -66,7 +66,7 @@ export default function Workflow() {
                             alignItems: 'center',
                             background: '#ffffff',
                             border: '1px solid #e2e8f0',
-                            color: 'var(--blue-primary)',
+                            color: 'var(--blue-primary, #3b82f6)',
                             padding: '6px 16px',
                             borderRadius: '100px',
                             fontSize: '13px',
@@ -87,7 +87,7 @@ export default function Workflow() {
                         fontFamily: "'Syne', sans-serif",
                         letterSpacing: '-0.02em'
                     }}>
-                        AI Automated Lab <span style={{ color: 'var(--blue-primary)' }}>Workflow</span>
+                        End-to-End Automated <span style={{ color: 'var(--blue-primary, #3b82f6)' }}>Workflow</span>
                     </h2>
                     <p style={{
                         color: '#64748b',
@@ -97,7 +97,7 @@ export default function Workflow() {
                         lineHeight: 1.6,
                         fontFamily: "'DM Sans', sans-serif"
                     }}>
-                        From machine to patient — fully automated, AI-verified, and delivered in minutes.
+                        From machine integration to patient delivery — fully automated, human-verified, and dispatched in minutes.
                     </p>
                 </div>
 
@@ -124,7 +124,7 @@ export default function Workflow() {
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    color: 'var(--blue-primary)',
+                                    color: 'var(--blue-primary, #3b82f6)',
                                     flexDirection: 'column',
                                     gap: 2,
                                     boxShadow: '0 4px 10px rgba(0,0,0,0.02)',
@@ -180,7 +180,8 @@ export default function Workflow() {
             </div>
 
             {/* Subtly Premium Hover Animations */}
-            <style>{`
+            <style dangerouslySetInnerHTML={{
+                __html: `
                 .workflow-step:hover .step-icon-box {
                     border-color: #93c5fd !important;
                     box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.15) !important;
@@ -189,7 +190,7 @@ export default function Workflow() {
                 .workflow-step:hover .step-content {
                     transform: translateX(4px);
                 }
-            `}</style>
+            `}} />
         </section>
     )
 }

@@ -1,42 +1,42 @@
 'use client'
-import { CreditCard, MessageCircle, Activity, Link as LinkIcon, Shield, Cpu } from 'lucide-react'
+import { CreditCard, MessageCircle, FileText, Database, ShieldCheck, Zap } from 'lucide-react'
 
 const integrations = [
     {
         icon: <CreditCard size={24} />,
-        name: 'Razorpay',
-        desc: 'Automate payment collection from B2B clients seamlessly.',
-        color: '#3b82f6', // Premium Blue
+        name: 'Payment Gateways',
+        desc: 'Direct integration with Razorpay/PhonePe to auto-reconcile patient payments and B2B client invoices.',
+        color: '#3b82f6',
     },
     {
         icon: <MessageCircle size={24} />,
-        name: 'WhatsApp',
-        desc: 'Share bills, reports, and status directly with your branding.',
-        color: '#22c55e', // WhatsApp Green
+        name: 'WhatsApp Business API',
+        desc: 'Official API integration for automated report dispatch, appointment reminders, and payment receipts.',
+        color: '#22c55e',
     },
     {
-        icon: <Activity size={24} />,
-        name: 'EkaCare',
-        desc: 'Tests auto-sync from prescriptions to OnePath and back.',
-        color: '#06b6d4', // Cyan
+        icon: <FileText size={24} />,
+        name: 'Doctor Referral Portal',
+        desc: 'Dedicated login for referring doctors to track their referred patients and live commission statements.',
+        color: '#f59e0b',
     },
     {
-        icon: <LinkIcon size={24} />,
-        name: 'REST API',
-        desc: 'Well-structured API docs to integrate from any website or app.',
-        color: '#8b5cf6', // Purple
+        icon: <Database size={24} />,
+        name: 'LIS Middleware',
+        desc: 'Bridge software for hardware connectivity, supporting HL7/ASTM protocols for 500+ analyzer models.',
+        color: '#6366f1',
     },
     {
-        icon: <Shield size={24} />,
-        name: 'ABHA Integration',
-        desc: 'Instant patient verification and digital health record syncing.',
-        color: '#14b8a6', // Teal
+        icon: <ShieldCheck size={24} />,
+        name: 'ABHA & EHR Sync',
+        desc: 'Compliant with Ayushman Bharat Health Account (ABHA) to push reports to patient health lockers.',
+        color: '#14b8a6',
     },
     {
-        icon: <Cpu size={24} />,
-        name: 'Machine Integration',
-        desc: 'Uni & Bi-directional support for all major analyzer brands.',
-        color: '#6366f1', // Indigo
+        icon: <Zap size={24} />,
+        name: 'Universal REST API',
+        desc: 'Secure API access for your mobile app or website to trigger test bookings and fetch report status.',
+        color: '#8b5cf6',
     },
 ]
 
@@ -45,7 +45,6 @@ export default function Integrations() {
         <section style={{ padding: '96px 20px', background: '#f8fafc' }}>
             <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
 
-                {/* Header Section */}
                 <div style={{ textAlign: 'center', marginBottom: 64 }}>
                     <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
                         <span style={{
@@ -53,7 +52,7 @@ export default function Integrations() {
                             alignItems: 'center',
                             background: '#eff6ff',
                             border: '1px solid #bfdbfe',
-                            color: 'var(--blue-primary)',
+                            color: 'var(--blue-primary, #3b82f6)',
                             padding: '6px 16px',
                             borderRadius: '100px',
                             fontSize: '13px',
@@ -62,7 +61,7 @@ export default function Integrations() {
                             textTransform: 'uppercase',
                             fontFamily: "'DM Sans', sans-serif",
                         }}>
-                            Integrations
+                            Connectivity
                         </span>
                     </div>
 
@@ -74,25 +73,24 @@ export default function Integrations() {
                         letterSpacing: '-0.02em',
                         fontFamily: "'Syne', sans-serif"
                     }}>
-                        Connect your favorite <span style={{ color: 'var(--blue-primary)' }}>Tools</span>
+                        Infrastructure that <span style={{ color: 'var(--blue-primary, #3b82f6)' }}>Integrates</span>
                     </h2>
 
                     <p style={{
                         color: '#64748b',
-                        maxWidth: 500,
+                        maxWidth: 550,
                         margin: '0 auto',
                         fontSize: 'clamp(15px, 2vw, 17px)',
                         lineHeight: 1.6,
                         fontFamily: "'DM Sans', sans-serif"
                     }}>
-                        OnePath connects effortlessly with the tools you already use — payments, WhatsApp, EMRs, and laboratory machines.
+                        OnePath isn't an island. We build bridges between your diagnostic machines, payment gateways, and the national health ecosystem.
                     </p>
                 </div>
 
-                {/* Integration Cards Grid */}
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
                     gap: 24,
                 }}>
                     {integrations.map(int => (
@@ -100,7 +98,7 @@ export default function Integrations() {
                             key={int.name}
                             className="integration-card"
                             style={{
-                                padding: '28px',
+                                padding: '32px',
                                 background: '#ffffff',
                                 border: '1px solid #e2e8f0',
                                 borderRadius: '20px',
@@ -108,14 +106,12 @@ export default function Integrations() {
                                 gap: 20,
                                 alignItems: 'flex-start',
                                 transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                                cursor: 'default'
                             }}
                         >
-                            {/* Icon Box */}
                             <div style={{
                                 width: 52, height: 52,
                                 borderRadius: '14px',
-                                background: `${int.color}15`, // 15 is hex opacity (approx 8%)
+                                background: `${int.color}15`,
                                 border: `1px solid ${int.color}30`,
                                 display: 'flex',
                                 alignItems: 'center',
@@ -127,7 +123,6 @@ export default function Integrations() {
                                 {int.icon}
                             </div>
 
-                            {/* Text Content */}
                             <div>
                                 <h3 style={{
                                     fontSize: 18,
@@ -152,7 +147,6 @@ export default function Integrations() {
                 </div>
             </div>
 
-            {/* Hover Animations */}
             <style>{`
                 .integration-card:hover {
                     transform: translateY(-5px);
@@ -160,7 +154,7 @@ export default function Integrations() {
                     box-shadow: 0 12px 30px -10px rgba(0,0,0,0.08);
                 }
                 .integration-card:hover .int-icon {
-                    transform: scale(1.08) rotate(-3deg);
+                    transform: scale(1.08);
                 }
             `}</style>
         </section>

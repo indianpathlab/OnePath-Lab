@@ -1,42 +1,110 @@
 'use client'
-import { Brain, Lightbulb, FileText, Flag, MessageSquare, Mic, Network, UserPlus, BarChart3, ShieldCheck } from 'lucide-react'
+import { Activity, ScanBarcode, FileText, MessageCircle, Network, UserPlus, PackageOpen, BarChart3, ShieldCheck } from 'lucide-react'
 
-const aiFeatures = [
-    { icon: <Brain size={24} />, title: 'AI Interpretation', desc: 'Smart AI drafts report interpretations automatically, saving pathologists hours.' },
-    { icon: <Lightbulb size={24} />, title: 'AI Test Suggestion', desc: 'Suggests relevant follow-up tests based on results to improve accuracy.' },
-    { icon: <FileText size={24} />, title: 'AI Smart Report', desc: 'Turns complex medical data into clear, patient-friendly insights.' },
-    { icon: <Flag size={24} />, title: 'AI Flagger', desc: 'Automatically detects machine issues or damaged samples in real-time.' },
-    { icon: <MessageSquare size={24} />, title: 'AI Assistant', desc: 'Instant insights to support pathology interpretation and reporting.' },
-    { icon: <Network size={24} />, title: 'Multi-Branch Sync', desc: 'Centralized control for all your lab branches with real-time data sync.' },
-    { icon: <UserPlus size={24} />, title: 'Doctor/Referral Portal', desc: 'Empower doctors with their own portal to track referrals and commissions.' },
-    { icon: <BarChart3 size={24} />, title: 'Business Intelligence', desc: 'Get deep analytics on test volume, revenue, and growth patterns.' },
-    { icon: <ShieldCheck size={24} />, title: 'Secure & Compliant', desc: 'End-to-end encryption with full NABL and regulatory compliance.' },
+// Realistic and Accurate LIS Features
+const labFeatures = [
+    {
+        icon: <Activity size={24} />,
+        title: 'Bidirectional Interfacing',
+        desc: 'Direct integration with lab analyzers (Cell Counters, Biochemistry). Eliminates manual entry errors entirely.'
+    },
+    {
+        icon: <ScanBarcode size={24} />,
+        title: 'Smart Barcode Tracking',
+        desc: 'Automated barcode generation for flawless sample tracking from collection to final report.'
+    },
+    {
+        icon: <FileText size={24} />,
+        title: 'Professional Reporting',
+        desc: 'Generate neat, customizable PDF reports with digital signatures, QR verification, and auto-highlighted abnormal values.'
+    },
+    {
+        icon: <MessageCircle size={24} />,
+        title: 'WhatsApp Automation',
+        desc: 'Instantly send invoice links and final PDF reports to patients and referring doctors via WhatsApp.'
+    },
+    {
+        icon: <Network size={24} />,
+        title: 'Multi-Branch Sync',
+        desc: 'Manage multiple collection centers and processing labs from a single centralized dashboard in real-time.'
+    },
+    {
+        icon: <UserPlus size={24} />,
+        title: 'B2B & Referral Management',
+        desc: 'Track doctor commissions, corporate tie-ups, and manage separate price lists for B2B clients easily.'
+    },
+    {
+        icon: <PackageOpen size={24} />,
+        title: 'Inventory Control',
+        desc: 'Track reagents, manage stock consumption per test, and get alerts before supplies run out.'
+    },
+    {
+        icon: <BarChart3 size={24} />,
+        title: 'Financial Analytics',
+        desc: 'Track daily collections, pending dues, revenue by department, and business growth patterns.'
+    },
+    {
+        icon: <ShieldCheck size={24} />,
+        title: 'Role-Based Security',
+        desc: 'Create secure logins for phlebotomists, technicians, and pathologists with restricted access and audit logs.'
+    },
 ]
 
 export default function Features() {
     return (
         <section style={{ padding: '80px 20px', background: '#ffffff' }}>
-            <div className="container">
+            <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
 
                 <div style={{ textAlign: 'center', marginBottom: 60 }}>
+                    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
+                        <span style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            background: '#eff6ff',
+                            border: '1px solid #bfdbfe',
+                            color: 'var(--blue-primary, #3b82f6)',
+                            padding: '6px 16px',
+                            borderRadius: '100px',
+                            fontSize: '13px',
+                            fontWeight: '700',
+                            letterSpacing: '0.05em',
+                            textTransform: 'uppercase',
+                            fontFamily: "'DM Sans', sans-serif",
+                        }}>
+                            Core Features
+                        </span>
+                    </div>
+
                     <h2 style={{
                         fontSize: 'clamp(28px, 5vw, 42px)',
                         fontWeight: 800,
                         color: '#0f172a',
                         marginBottom: 16,
+                        fontFamily: "'Syne', sans-serif",
                         letterSpacing: '-0.02em'
                     }}>
                         Everything your lab needs to <br />
-                        <span style={{ color: 'var(--blue-primary)' }}>Scale Faster</span>
+                        <span style={{ color: 'var(--blue-primary, #3b82f6)' }}>Scale Faster</span>
                     </h2>
+
+                    <p style={{
+                        color: '#64748b',
+                        maxWidth: 500,
+                        margin: '0 auto',
+                        fontSize: 'clamp(15px, 2vw, 17px)',
+                        lineHeight: 1.6,
+                        fontFamily: "'DM Sans', sans-serif"
+                    }}>
+                        Powerful automation tools designed specifically for modern diagnostic centers to reduce errors and increase revenue.
+                    </p>
                 </div>
 
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
                     gap: 24,
                 }}>
-                    {aiFeatures.map((feat, index) => (
+                    {labFeatures.map((feat, index) => (
                         <div
                             key={index}
                             className="feature-card"
@@ -46,12 +114,21 @@ export default function Features() {
                                 border: '1px solid #e2e8f0',
                                 borderRadius: '20px',
                                 transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                                position: 'relative'
+                                position: 'relative',
+                                display: 'flex',
+                                flexDirection: 'column'
                             }}
                         >
                             <div style={{
                                 marginBottom: 20,
-                                color: 'var(--blue-primary)',
+                                width: 48,
+                                height: 48,
+                                borderRadius: 12,
+                                background: '#eff6ff',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                color: 'var(--blue-primary, #3b82f6)',
                                 transition: 'transform 0.4s ease'
                             }} className="icon-box">
                                 {feat.icon}
@@ -60,14 +137,16 @@ export default function Features() {
                                 fontSize: 18,
                                 fontWeight: 700,
                                 marginBottom: 12,
-                                color: '#0f172a'
+                                color: '#0f172a',
+                                fontFamily: "'DM Sans', sans-serif"
                             }}>
                                 {feat.title}
                             </h3>
                             <p style={{
                                 color: '#64748b',
                                 fontSize: 'clamp(14px, 1.5vw, 15px)',
-                                lineHeight: 1.6
+                                lineHeight: 1.6,
+                                fontFamily: "'DM Sans', sans-serif"
                             }}>
                                 {feat.desc}
                             </p>
@@ -78,12 +157,14 @@ export default function Features() {
 
             <style>{`
                 .feature-card:hover {
-                    border-color: #cbd5e1;
+                    border-color: #cbd5e1 !important;
                     box-shadow: 0 10px 30px -10px rgba(0,0,0,0.08);
                     transform: translateY(-4px);
                 }
                 .feature-card:hover .icon-box {
-                    transform: scale(1.1);
+                    transform: scale(1.1) rotate(5deg);
+                    background: var(--blue-primary, #3b82f6) !important;
+                    color: #ffffff !important;
                 }
             `}</style>
         </section>

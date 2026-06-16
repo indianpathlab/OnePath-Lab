@@ -131,9 +131,7 @@ export default function PrivacyPolicy() {
                                 If you have any questions about how we handle your data, want to request a data export, or want to report a potential security concern, contact our Data Protection Officer directly.
                             </p>
                             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-                                <a href="mailto:privacy@onepath.in" style={{ fontSize: 14.5, fontWeight: 600, color: '#2563eb', textDecoration: 'none', fontFamily: "'DM Sans',sans-serif" }}>privacy@onepath.in</a>
-                                <span style={{ color: '#cbd5e1' }}>·</span>
-                                <a href="mailto:hello@onepath.in" style={{ fontSize: 14.5, fontWeight: 600, color: '#2563eb', textDecoration: 'none', fontFamily: "'DM Sans',sans-serif" }}>hello@onepath.in</a>
+                                <a href="mailto:privacy@onepath.in" style={{ fontSize: 14.5, fontWeight: 600, color: '#2563eb', textDecoration: 'none', fontFamily: "'DM Sans',sans-serif" }}>support@onepathlab.com</a>
                             </div>
                         </div>
                     </div>

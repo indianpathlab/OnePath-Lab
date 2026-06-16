@@ -66,7 +66,7 @@ export default function Comparison() {
                         lineHeight: 1.6,
                         fontFamily: "'DM Sans', sans-serif"
                     }}>
-                        See why 2000+ labs switched to cloud-based OnePath from outdated local software.
+                        See why 200+ labs switched to cloud-based OnePath from outdated local software.
                     </p>
                 </div>
 
