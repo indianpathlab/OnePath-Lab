@@ -1,84 +1,52 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import { Search, Activity, Clock, ShieldCheck, Beaker, HeartPulse, Dna, Droplet, TestTube2, Scaling } from 'lucide-react'
+import { Search, Activity, Clock, ShieldCheck, Beaker, HeartPulse, Dna, Droplet, TestTube2, Scaling, ChevronLeft, ChevronRight } from 'lucide-react'
+import allTests from '../../data/tests.json'
 
-// Enhanced mock data with Technical Details & Descriptions
-const allTests = [
-    {
-        name: 'Complete Blood Count (CBC)', category: 'Routine', oldPrice: 450, newPrice: 299, tat: '12 Hrs', icon: <Activity size={20} />,
-        sample: 'Whole Blood', vial: 'EDTA (Purple Top)', volume: '2 ml',
-        desc: 'Evaluates overall health and detects a wide range of disorders, including anemia, infection, and leukemia.'
-    },
-    {
-        name: 'Lipid Profile', category: 'Profiles', oldPrice: 900, newPrice: 599, tat: '12 Hrs', icon: <HeartPulse size={20} />,
-        sample: 'Serum', vial: 'SST (Yellow Top)', volume: '3 ml',
-        desc: 'Measures cholesterol and triglycerides to assess the risk of cardiovascular disease. Fasting required.'
-    },
-    {
-        name: 'Thyroid Profile (T3, T4, TSH)', category: 'Profiles', oldPrice: 850, newPrice: 499, tat: '24 Hrs', icon: <Dna size={20} />,
-        sample: 'Serum', vial: 'SST (Yellow Top)', volume: '3 ml',
-        desc: 'Checks thyroid gland function to diagnose hyperthyroidism or hypothyroidism.'
-    },
-    {
-        name: 'Liver Function Test (LFT)', category: 'Profiles', oldPrice: 1100, newPrice: 699, tat: '12 Hrs', icon: <Activity size={20} />,
-        sample: 'Serum', vial: 'SST (Yellow Top)', volume: '3 ml',
-        desc: 'Assesses liver health by measuring proteins, liver enzymes, and bilirubin levels.'
-    },
-    {
-        name: 'Kidney Function Test (KFT)', category: 'Profiles', oldPrice: 1200, newPrice: 799, tat: '12 Hrs', icon: <Activity size={20} />,
-        sample: 'Serum', vial: 'SST (Yellow Top)', volume: '3 ml',
-        desc: 'Evaluates kidney function by measuring urea, creatinine, and electrolytes.'
-    },
-    {
-        name: 'HbA1c (Glycosylated Hb)', category: 'Diabetes', oldPrice: 650, newPrice: 399, tat: '12 Hrs', icon: <Beaker size={20} />,
-        sample: 'Whole Blood', vial: 'EDTA (Purple Top)', volume: '2 ml',
-        desc: 'Measures your average blood sugar levels over the past 2-3 months.'
-    },
-    {
-        name: 'Fasting Blood Sugar (FBS)', category: 'Diabetes', oldPrice: 150, newPrice: 99, tat: '6 Hrs', icon: <Beaker size={20} />,
-        sample: 'Plasma', vial: 'Fluoride (Grey Top)', volume: '2 ml',
-        desc: 'Measures blood glucose after an overnight fast to screen for diabetes.'
-    },
-    {
-        name: 'Vitamin D (25-OH)', category: 'Vitamins', oldPrice: 1600, newPrice: 899, tat: '24 Hrs', icon: <ShieldCheck size={20} />,
-        sample: 'Serum', vial: 'SST (Yellow Top)', volume: '3 ml',
-        desc: 'Measures Vitamin D levels to assess bone health, immunity, and fatigue causes.'
-    },
-    {
-        name: 'Urine Routine & Microscopy', category: 'Routine', oldPrice: 250, newPrice: 149, tat: '12 Hrs', icon: <Beaker size={20} />,
-        sample: 'Urine', vial: 'Sterile Container', volume: '15-20 ml',
-        desc: 'Checks for urinary tract infections, kidney disease, and diabetes markers in urine.'
-    },
-    {
-        name: 'C-Reactive Protein (CRP)', category: 'Specialized', oldPrice: 700, newPrice: 450, tat: '12 Hrs', icon: <Dna size={20} />,
-        sample: 'Serum', vial: 'SST (Yellow Top)', volume: '2 ml',
-        desc: 'Measures the level of c-reactive protein to identify inflammation or infection in the body.'
-    },
-    {
-        name: 'D-Dimer', category: 'Specialized', oldPrice: 1200, newPrice: 850, tat: '12 Hrs', icon: <Dna size={20} />,
-        sample: 'Plasma', vial: 'Citrate (Light Blue)', volume: '2 ml',
-        desc: 'Helps rule out the presence of a serious blood clot (thrombosis).'
-    },
-    {
-        name: 'Widal Test (Typhoid)', category: 'Specialized', oldPrice: 400, newPrice: 249, tat: '12 Hrs', icon: <Activity size={20} />,
-        sample: 'Serum', vial: 'SST (Yellow Top)', volume: '2 ml',
-        desc: 'Detects antibodies against Salmonella bacteria to diagnose Typhoid fever.'
-    },
-]
+const getTestIcon = (category: string) => {
+    switch (category) {
+        case 'Routine': return <Activity size={20} />;
+        case 'Profiles': return <HeartPulse size={20} />;
+        case 'Diabetes': return <Beaker size={20} />;
+        case 'Vitamins': return <ShieldCheck size={20} />;
+        case 'Specialized': return <Dna size={20} />;
+        default: return <Activity size={20} />;
+    }
+}
 
 const categories = ['All', ...Array.from(new Set(allTests.map(test => test.category)))]
+const ITEMS_PER_PAGE = 6;
 
 export default function TestPricing() {
     const [searchTerm, setSearchTerm] = useState('')
     const [activeCategory, setActiveCategory] = useState('All')
+    const [currentPage, setCurrentPage] = useState(1)
+
+    useEffect(() => {
+        setCurrentPage(1)
+    }, [searchTerm, activeCategory])
 
     const filteredTests = allTests.filter(test => {
         const matchesSearch = test.name.toLowerCase().includes(searchTerm.toLowerCase())
         const matchesCategory = activeCategory === 'All' || test.category === activeCategory
         return matchesSearch && matchesCategory
     })
+
+    const totalPages = Math.ceil(filteredTests.length / ITEMS_PER_PAGE)
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
+    const currentTests = filteredTests.slice(startIndex, startIndex + ITEMS_PER_PAGE)
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) setCurrentPage(currentPage - 1)
+        window.scrollTo({ top: 300, behavior: 'smooth' })
+    }
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) setCurrentPage(currentPage + 1)
+        window.scrollTo({ top: 300, behavior: 'smooth' })
+    }
 
     return (
         <main style={{ background: '#f8fafc', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -158,100 +126,127 @@ export default function TestPricing() {
 
                     {/* Tests Grid */}
                     {filteredTests.length > 0 ? (
-                        <div style={{
-                            display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: 24,
-                        }}>
-                            {filteredTests.map((test, i) => {
-                                const savePercent = Math.round(((test.oldPrice - test.newPrice) / test.oldPrice) * 100);
+                        <>
+                            <div style={{
+                                display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: 24, marginBottom: 48
+                            }}>
+                                {currentTests.map((test, i) => {
+                                    const savePercent = Math.round(((test.oldPrice - test.newPrice) / test.oldPrice) * 100);
 
-                                return (
-                                    <div key={i} className="test-card" style={{
-                                        background: '#ffffff', borderRadius: '20px', border: '1px solid #e2e8f0',
-                                        padding: '28px', display: 'flex', flexDirection: 'column',
-                                        transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)', position: 'relative',
-                                    }}>
-                                        {/* Category & Save Badge */}
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-                                            <span style={{
-                                                background: '#f1f5f9', color: '#475569', padding: '4px 12px',
-                                                borderRadius: '6px', fontSize: 12, fontWeight: 700,
-                                                fontFamily: "'DM Sans', sans-serif", textTransform: 'uppercase', letterSpacing: '0.05em'
-                                            }}>
-                                                {test.category}
-                                            </span>
-                                            <span style={{
-                                                background: '#dcfce7', color: '#16a34a', border: '1px solid #bbf7d0',
-                                                padding: '4px 10px', borderRadius: '100px', fontSize: 12, fontWeight: 700,
-                                                fontFamily: "'DM Sans', sans-serif",
-                                            }}>
-                                                Save {savePercent}%
-                                            </span>
-                                        </div>
-
-                                        {/* Test Name & Icon */}
-                                        <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 20 }}>
-                                            <div style={{
-                                                width: 48, height: 48, background: '#eff6ff', color: 'var(--blue-primary)',
-                                                borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
-                                            }}>
-                                                {test.icon}
-                                            </div>
-                                            <h3 style={{ fontSize: 19, fontWeight: 800, color: '#0f172a', fontFamily: "'Syne', sans-serif", lineHeight: 1.3 }}>
-                                                {test.name}
-                                            </h3>
-                                        </div>
-
-                                        {/* Medical Description */}
-                                        <p style={{ fontSize: 14.5, color: '#64748b', lineHeight: 1.6, fontFamily: "'DM Sans', sans-serif", marginBottom: 24, flex: 1 }}>
-                                            {test.desc}
-                                        </p>
-
-                                        {/* Technical Specifications (Vial, Sample, Volume) */}
-                                        <div style={{
-                                            display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12,
-                                            background: '#f8fafc', padding: '16px', borderRadius: '12px', marginBottom: 24
+                                    return (
+                                        <div key={i} className="test-card" style={{
+                                            background: '#ffffff', borderRadius: '20px', border: '1px solid #e2e8f0',
+                                            padding: '28px', display: 'flex', flexDirection: 'column',
+                                            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)', position: 'relative',
                                         }}>
-                                            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-                                                <Droplet size={16} color="#94a3b8" style={{ marginTop: 2 }} />
-                                                <div>
-                                                    <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', fontFamily: "'DM Sans', sans-serif" }}>Sample</div>
-                                                    <div style={{ fontSize: 13, fontWeight: 600, color: '#334155', fontFamily: "'DM Sans', sans-serif" }}>{test.sample}</div>
-                                                </div>
+                                            {/* Category & Save Badge */}
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+                                                <span style={{
+                                                    background: '#f1f5f9', color: '#475569', padding: '4px 12px',
+                                                    borderRadius: '6px', fontSize: 12, fontWeight: 700,
+                                                    fontFamily: "'DM Sans', sans-serif", textTransform: 'uppercase', letterSpacing: '0.05em'
+                                                }}>
+                                                    {test.category}
+                                                </span>
+                                                <span style={{
+                                                    background: '#dcfce7', color: '#16a34a', border: '1px solid #bbf7d0',
+                                                    padding: '4px 10px', borderRadius: '100px', fontSize: 12, fontWeight: 700,
+                                                    fontFamily: "'DM Sans', sans-serif",
+                                                }}>
+                                                    Save {savePercent}%
+                                                </span>
                                             </div>
-                                            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-                                                <TestTube2 size={16} color="#94a3b8" style={{ marginTop: 2 }} />
-                                                <div>
-                                                    <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', fontFamily: "'DM Sans', sans-serif" }}>Vial / Container</div>
-                                                    <div style={{ fontSize: 13, fontWeight: 600, color: '#334155', fontFamily: "'DM Sans', sans-serif" }}>{test.vial}</div>
-                                                </div>
-                                            </div>
-                                            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, gridColumn: 'span 2' }}>
-                                                <Scaling size={16} color="#94a3b8" style={{ marginTop: 2 }} />
-                                                <div>
-                                                    <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', fontFamily: "'DM Sans', sans-serif" }}>Required Volume</div>
-                                                    <div style={{ fontSize: 13, fontWeight: 600, color: '#334155', fontFamily: "'DM Sans', sans-serif" }}>{test.volume}</div>
-                                                </div>
-                                            </div>
-                                        </div>
 
-                                        {/* TAT & Pricing Section (No Book Button) */}
-                                        <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#64748b', fontSize: 14, fontWeight: 500, fontFamily: "'DM Sans', sans-serif" }}>
-                                                <Clock size={16} /> TAT: {test.tat}
+                                            {/* Test Name & Icon */}
+                                            <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 20 }}>
+                                                <div style={{
+                                                    width: 48, height: 48, background: '#eff6ff', color: 'var(--blue-primary)',
+                                                    borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+                                                }}>
+                                                    {getTestIcon(test.category)}
+                                                </div>
+                                                <h3 style={{ fontSize: 19, fontWeight: 800, color: '#0f172a', fontFamily: "'Syne', sans-serif", lineHeight: 1.3 }}>
+                                                    {test.name}
+                                                </h3>
                                             </div>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                                                <span style={{ fontSize: 15, color: '#94a3b8', textDecoration: 'line-through', fontWeight: 600, fontFamily: "'DM Sans', sans-serif" }}>
-                                                    ₹{test.oldPrice}
-                                                </span>
-                                                <span style={{ fontSize: 24, fontWeight: 800, color: 'var(--blue-primary)', fontFamily: "'Syne', sans-serif" }}>
-                                                    ₹{test.newPrice}
-                                                </span>
+
+                                            {/* Medical Description */}
+                                            <p style={{ fontSize: 14.5, color: '#64748b', lineHeight: 1.6, fontFamily: "'DM Sans', sans-serif", marginBottom: 24, flex: 1 }}>
+                                                {test.desc}
+                                            </p>
+
+                                            {/* Technical Specifications (Vial, Sample, Volume) */}
+                                            <div style={{
+                                                display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12,
+                                                background: '#f8fafc', padding: '16px', borderRadius: '12px', marginBottom: 24
+                                            }}>
+                                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+                                                    <Droplet size={16} color="#94a3b8" style={{ marginTop: 2 }} />
+                                                    <div>
+                                                        <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', fontFamily: "'DM Sans', sans-serif" }}>Sample</div>
+                                                        <div style={{ fontSize: 13, fontWeight: 600, color: '#334155', fontFamily: "'DM Sans', sans-serif" }}>{test.sample}</div>
+                                                    </div>
+                                                </div>
+                                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+                                                    <TestTube2 size={16} color="#94a3b8" style={{ marginTop: 2 }} />
+                                                    <div>
+                                                        <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', fontFamily: "'DM Sans', sans-serif" }}>Vial / Container</div>
+                                                        <div style={{ fontSize: 13, fontWeight: 600, color: '#334155', fontFamily: "'DM Sans', sans-serif" }}>{test.vial}</div>
+                                                    </div>
+                                                </div>
+                                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, gridColumn: 'span 2' }}>
+                                                    <Scaling size={16} color="#94a3b8" style={{ marginTop: 2 }} />
+                                                    <div>
+                                                        <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', fontFamily: "'DM Sans', sans-serif" }}>Required Volume</div>
+                                                        <div style={{ fontSize: 13, fontWeight: 600, color: '#334155', fontFamily: "'DM Sans', sans-serif" }}>{test.volume}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* TAT & Pricing Section */}
+                                            <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#64748b', fontSize: 14, fontWeight: 500, fontFamily: "'DM Sans', sans-serif" }}>
+                                                    <Clock size={16} /> TAT: {test.tat}
+                                                </div>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                                                    <span style={{ fontSize: 15, color: '#94a3b8', textDecoration: 'line-through', fontWeight: 600, fontFamily: "'DM Sans', sans-serif" }}>
+                                                        ₹{test.oldPrice}
+                                                    </span>
+                                                    <span style={{ fontSize: 24, fontWeight: 800, color: 'var(--blue-primary)', fontFamily: "'Syne', sans-serif" }}>
+                                                        ₹{test.newPrice}
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
+                                    )
+                                })}
+                            </div>
+
+                            {/* Pagination Controls */}
+                            {totalPages > 1 && (
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 16 }}>
+                                    <button
+                                        onClick={handlePrevPage}
+                                        disabled={currentPage === 1}
+                                        className="pagination-btn"
+                                    >
+                                        <ChevronLeft size={20} /> Previous
+                                    </button>
+
+                                    <div style={{ fontSize: 14.5, fontWeight: 600, color: '#475569', fontFamily: "'DM Sans', sans-serif" }}>
+                                        Page {currentPage} of {totalPages}
                                     </div>
-                                )
-                            })}
-                        </div>
+
+                                    <button
+                                        onClick={handleNextPage}
+                                        disabled={currentPage === totalPages}
+                                        className="pagination-btn"
+                                    >
+                                        Next <ChevronRight size={20} />
+                                    </button>
+                                </div>
+                            )}
+                        </>
                     ) : (
                         <div style={{ textAlign: 'center', padding: '60px 20px', background: '#ffffff', borderRadius: 20, border: '1px solid #e2e8f0' }}>
                             <Search size={48} color="#cbd5e1" style={{ margin: '0 auto 16px' }} />
@@ -274,6 +269,34 @@ export default function TestPricing() {
                     border-color: #cbd5e1 !important;
                     box-shadow: 0 15px 35px -10px rgba(0,0,0,0.08) !important;
                     transform: translateY(-4px);
+                }
+
+                .pagination-btn {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    padding: 10px 20px;
+                    border-radius: 100px;
+                    background: #ffffff;
+                    border: 1px solid #cbd5e1;
+                    color: #0f172a;
+                    font-size: 14.5px;
+                    font-weight: 600;
+                    font-family: 'DM Sans', sans-serif;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                }
+
+                .pagination-btn:hover:not(:disabled) {
+                    background: #f8fafc;
+                    border-color: var(--blue-primary);
+                    color: var(--blue-primary);
+                }
+
+                .pagination-btn:disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                    background: #f1f5f9;
                 }
 
                 .hide-scrollbar::-webkit-scrollbar {

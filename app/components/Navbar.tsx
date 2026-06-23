@@ -4,7 +4,22 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Menu, X, ChevronDown, Home, FlaskConical, FileSearch, Microscope, Info, Phone, CreditCard, BookOpen } from 'lucide-react'
 
-const navLinks = [
+// Strong TypeScript Interfaces for scalability
+interface SubItem {
+    label: string;
+    href: string;
+    icon: React.ReactNode;
+    desc: string;
+}
+
+interface NavLink {
+    label: string;
+    href: string;
+    dropdown: boolean;
+    subItems?: SubItem[];
+}
+
+const navLinks: NavLink[] = [
     {
         label: 'Product',
         href: '#',
@@ -46,6 +61,8 @@ export default function Navbar() {
         return () => { document.body.style.overflow = '' }
     }, [menuOpen])
 
+    if (!mounted) return null;
+
     return (
         <>
             {/* ── Floating pill wrapper ── */}
@@ -78,7 +95,6 @@ export default function Navbar() {
                     <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', flexShrink: 0 }}>
                         <Image src="/logo.png" alt="Logo" width={32} height={32} style={{ objectFit: 'contain' }} priority />
 
-                        {/* Premium animated brand name */}
                         <span style={{ display: 'flex', alignItems: 'baseline', gap: 1, userSelect: 'none' }}>
                             {'OnePath'.split('').map((ch, i) => (
                                 <span key={i} className={`brand-char brand-char-${i}`} style={{
@@ -134,7 +150,7 @@ export default function Navbar() {
                                                     <span className="dd-icon-wrap">{sub.icon}</span>
                                                     <span className="dd-text">
                                                         <span className="dd-label">{sub.label}</span>
-                                                        {'desc' in sub && <span className="dd-desc">{sub.desc}</span>}
+                                                        {sub.desc && <span className="dd-desc">{sub.desc}</span>}
                                                     </span>
                                                 </Link>
                                             ))}
@@ -147,40 +163,10 @@ export default function Navbar() {
 
                     {/* ── Right CTAs ── */}
                     <div className="nav-cta" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        {/* LOCALHOST URL FOR LIS SOFTWARE LOGIN */}
-                        <Link href="http://lis.onepathlab.localhost:3001/login"
-                            style={{
-                                padding: '9px 22px',
-                                fontSize: 14, fontWeight: 600,
-                                color: '#0f172a',
-                                border: '1px solid #e2e8f0',
-                                borderRadius: 100,
-                                textDecoration: 'none',
-                                fontFamily: "'DM Sans', sans-serif",
-                                transition: 'all 0.2s ease',
-                            }}
-                            onMouseEnter={e => { e.currentTarget.style.background = '#f8fafc'; e.currentTarget.style.borderColor = '#94a3b8' }}
-                            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = '#e2e8f0' }}
-                        >
+                        <Link href="http://lis.onepathlab.localhost:3001/login" className="cta-login-btn">
                             Log in
                         </Link>
-                        <Link href="/trial"
-                            style={{
-                                display: 'inline-flex', alignItems: 'center', gap: 6,
-                                padding: '10px 24px',
-                                fontSize: 14, fontWeight: 700,
-                                color: '#fff',
-                                background: '#2563eb',
-                                borderRadius: 100,
-                                textDecoration: 'none',
-                                fontFamily: "'DM Sans', sans-serif",
-                                boxShadow: '0 4px 16px rgba(37,99,235,0.35)',
-                                transition: 'all 0.2s ease',
-                                whiteSpace: 'nowrap',
-                            }}
-                            onMouseEnter={e => { e.currentTarget.style.background = '#1d4ed8'; e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 6px 22px rgba(37,99,235,0.45)' }}
-                            onMouseLeave={e => { e.currentTarget.style.background = '#2563eb'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(37,99,235,0.35)' }}
-                        >
+                        <Link href="/trial" className="cta-trial-btn">
                             Try for free
                         </Link>
                     </div>
@@ -256,198 +242,193 @@ export default function Navbar() {
                     borderTop: '1px solid #f1f5f9',
                     display: 'flex', flexDirection: 'column', gap: 10,
                 }}>
-                    {/* LOCALHOST URL FOR LIS SOFTWARE LOGIN */}
-                    <Link href="http://lis.onepathlab.localhost:3001/login" onClick={() => setMenuOpen(false)} style={{
-                        display: 'block', textAlign: 'center',
-                        padding: '13px',
-                        fontSize: 15, fontWeight: 600,
-                        color: '#0f172a',
-                        border: '1px solid #e2e8f0',
-                        borderRadius: 14,
-                        textDecoration: 'none',
-                        fontFamily: "'DM Sans', sans-serif",
-                        transition: 'all 0.2s',
-                    }}>
+                    <Link href="http://lis.onepathlab.localhost:3001/login" onClick={() => setMenuOpen(false)} className="drawer-login-btn">
                         Log in
                     </Link>
-                    <Link href="/trial" onClick={() => setMenuOpen(false)} style={{
-                        display: 'block', textAlign: 'center',
-                        padding: '14px',
-                        fontSize: 15, fontWeight: 700,
-                        color: '#fff',
-                        background: '#2563eb',
-                        borderRadius: 14,
-                        textDecoration: 'none',
-                        fontFamily: "'DM Sans', sans-serif",
-                        boxShadow: '0 4px 16px rgba(37,99,235,0.35)',
-                    }}>
+                    <Link href="/trial" onClick={() => setMenuOpen(false)} className="drawer-trial-btn">
                         Try for free →
                     </Link>
                 </div>
             </div>
 
-            {/* ── All CSS ── */}
-            <style>{`
-        /* Brand hover animation */
-        a:hover .brand-char { color: #2563eb !important; transform: translateY(-2px); }
- 
-        /* Nav link hover */
-        .nav-link-text:hover {
-          background: #f1f5f9 !important;
-          color: #0f172a !important;
-        }
-        .nav-item:hover .nav-link-text {
-          color: #2563eb !important;
-        }
-        .nav-item:hover .dd-icon {
-          transform: rotate(180deg);
-          opacity: 1 !important;
-        }
- 
-        /* Dropdown */
-        .nav-dropdown {
-          position: absolute;
-          top: 100%; left: 50%;
-          transform: translateX(-50%) translateY(8px) scale(0.96);
-          opacity: 0; visibility: hidden;
-          transition: all 0.28s cubic-bezier(0.4,0,0.2,1);
-          pointer-events: none;
-          z-index: 200;
-          padding-top: 4px;
-        }
-        .dropdown-inner {
-          background: rgba(255,255,255,0.98);
-          backdrop-filter: blur(24px);
-          -webkit-backdrop-filter: blur(24px);
-          border: 1px solid #e8f0fe;
-          border-radius: 18px;
-          padding: 8px;
-          min-width: 240px;
-          box-shadow: 0 20px 48px -8px rgba(0,0,0,0.12), 0 4px 8px -2px rgba(0,0,0,0.04);
-        }
-        .nav-item:hover .nav-dropdown {
-          opacity: 1; visibility: visible;
-          transform: translateX(-50%) translateY(0) scale(1);
-          pointer-events: auto;
-        }
-        .dropdown-link {
-          display: flex; align-items: center; gap: 12px;
-          padding: 10px 12px;
-          border-radius: 12px;
-          text-decoration: none;
-          transition: all 0.18s ease;
-        }
-        .dropdown-link:hover {
-          background: #eff6ff;
-          transform: translateX(3px);
-        }
-        .dropdown-link:hover .dd-label { color: #2563eb; }
-        .dd-icon-wrap {
-          width: 32px; height: 32px; border-radius: 8px;
-          background: #f1f5f9;
-          display: flex; align-items: center; justify-content: center;
-          color: #2563eb; flex-shrink: 0;
-          transition: background 0.18s;
-        }
-        .dropdown-link:hover .dd-icon-wrap { background: #dbeafe; }
-        .dd-text { display: flex; flex-direction: column; gap: 1px; }
-        .dd-label {
-          font-size: 13.5px; font-weight: 600;
-          color: #1e293b; font-family: 'DM Sans', sans-serif;
-          transition: color 0.18s;
-        }
-        .dd-desc {
-          font-size: 11.5px; color: #94a3b8;
-          font-family: 'DM Sans', sans-serif; font-weight: 400;
-        }
- 
-        /* Hamburger animated icon */
-        .hamburger-icon {
-          width: 22px; height: 16px;
-          display: flex; flex-direction: column;
-          justify-content: space-between;
-          position: relative;
-        }
-        .hamburger-icon span {
-          display: block; height: 2px;
-          background: #0f172a; border-radius: 2px;
-          transform-origin: center;
-          transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-        }
-        .hamburger-icon.open span:nth-child(1) {
-          transform: translateY(7px) rotate(45deg);
-        }
-        .hamburger-icon.open span:nth-child(2) {
-          opacity: 0; transform: scaleX(0);
-        }
-        .hamburger-icon.open span:nth-child(3) {
-          transform: translateY(-7px) rotate(-45deg);
-        }
- 
-        /* Mobile backdrop */
-        .mobile-backdrop {
-          position: fixed; inset: 0; z-index: 998;
-          background: rgba(0,0,0,0.35);
-          backdrop-filter: blur(2px);
-          opacity: 0; visibility: hidden;
-          transition: all 0.3s ease;
-        }
-        .mobile-backdrop.visible {
-          opacity: 1; visibility: visible;
-        }
- 
-        /* Mobile drawer — slides from right */
-        .mobile-drawer {
-          position: fixed;
-          top: 0; right: 0; bottom: 0;
-          width: min(340px, 90vw);
-          z-index: 999;
-          background: #ffffff;
-          box-shadow: -8px 0 40px rgba(0,0,0,0.12);
-          display: flex; flex-direction: column;
-          transform: translateX(100%);
-          transition: transform 0.38s cubic-bezier(0.4,0,0.2,1);
-          border-radius: 20px 0 0 20px;
-          overflow: hidden;
-        }
-        .mobile-drawer.open {
-          transform: translateX(0);
-        }
- 
-        /* Responsive show/hide */
-        @media (max-width: 900px) {
-          .nav-links { display: none !important; }
-          .nav-cta   { display: none !important; }
-          .nav-hamburger { display: flex !important; }
-        }
-        @media (min-width: 901px) {
-          .mobile-drawer   { display: none !important; }
-          .mobile-backdrop { display: none !important; }
-        }
-      `}</style>
+            {/* ── All CSS Styles wrapping via dangerouslySetInnerHTML ── */}
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                a:hover .brand-char { color: #2563eb !important; transform: translateY(-2px); }
+         
+                .nav-link-text:hover {
+                  background: #f1f5f9 !important;
+                  color: #0f172a !important;
+                }
+                .nav-item:hover .nav-link-text {
+                  color: #2563eb !important;
+                }
+                .nav-item:hover .dd-icon {
+                  transform: rotate(180deg);
+                  opacity: 1 !important;
+                }
+         
+                .nav-dropdown {
+                  position: absolute;
+                  top: 100%; left: 50%;
+                  transform: translateX(-50%) translateY(8px) scale(0.96);
+                  opacity: 0; visibility: hidden;
+                  transition: all 0.28s cubic-bezier(0.4,0,0.2,1);
+                  pointer-events: none;
+                  z-index: 200;
+                  padding-top: 4px;
+                }
+                .dropdown-inner {
+                  background: rgba(255,255,255,0.98);
+                  backdrop-filter: blur(24px);
+                  -webkit-backdrop-filter: blur(24px);
+                  border: 1px solid #e8f0fe;
+                  border-radius: 18px;
+                  padding: 8px;
+                  min-width: 240px;
+                  box-shadow: 0 20px 48px -8px rgba(0,0,0,0.12), 0 4px 8px -2px rgba(0,0,0,0.04);
+                }
+                .nav-item:hover .nav-dropdown {
+                  opacity: 1; visibility: visible;
+                  transform: translateX(-50%) translateY(0) scale(1);
+                  pointer-events: auto;
+                }
+                .dropdown-link {
+                  display: flex; align-items: center; gap: 12px;
+                  padding: 10px 12px;
+                  border-radius: 12px;
+                  text-decoration: none;
+                  transition: all 0.18s ease;
+                }
+                .dropdown-link:hover {
+                  background: #eff6ff;
+                  transform: translateX(3px);
+                }
+                .dropdown-link:hover .dd-label { color: #2563eb; }
+                .dd-icon-wrap {
+                  width: 32px; height: 32px; border-radius: 8px;
+                  background: #f1f5f9;
+                  display: flex; align-items: center; justify-content: center;
+                  color: #2563eb; flex-shrink: 0;
+                  transition: background 0.18s;
+                }
+                .dropdown-link:hover .dd-icon-wrap { background: #dbeafe; }
+                .dd-text { display: flex; flex-direction: column; gap: 1px; }
+                .dd-label {
+                  font-size: 13.5px; font-weight: 600;
+                  color: #1e293b; font-family: 'DM Sans', sans-serif;
+                  transition: color 0.18s;
+                }
+                .dd-desc {
+                  font-size: 11.5px; color: #94a3b8;
+                  font-family: 'DM Sans', sans-serif; font-weight: 400;
+                }
+         
+                .hamburger-icon {
+                  width: 22px; height: 16px;
+                  display: flex; flex-direction: column;
+                  justify-content: space-between;
+                  position: relative;
+                }
+                .hamburger-icon span {
+                  display: block; height: 2px;
+                  background: #0f172a; border-radius: 2px;
+                  transform-origin: center;
+                  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+                }
+                .hamburger-icon.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+                .hamburger-icon.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+                .hamburger-icon.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+         
+                .mobile-backdrop {
+                  position: fixed; inset: 0; z-index: 1010;
+                  background: rgba(15, 23, 42, 0.3);
+                  backdrop-filter: blur(4px);
+                  -webkit-backdrop-filter: blur(4px);
+                  opacity: 0; visibility: hidden;
+                  transition: all 0.3s ease;
+                }
+                .mobile-backdrop.visible { opacity: 1; visibility: visible; }
+         
+                .mobile-drawer {
+                  position: fixed; top: 0; right: 0; bottom: 0;
+                  width: min(340px, 90vw); z-index: 1020;
+                  background: #ffffff;
+                  box-shadow: -8px 0 40px rgba(15, 23, 42, 0.08);
+                  display: flex; flex-direction: column;
+                  transform: translateX(100%);
+                  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+                  border-radius: 24px 0 0 24px;
+                  overflow: hidden;
+                }
+                .mobile-drawer.open { transform: translateX(0); }
+
+                /* Static Clean Desktop CSS Classes */
+                .cta-login-btn {
+                    padding: 9px 22px; font-size: 14px; font-weight: 600; color: #0f172a;
+                    border: 1px solid #e2e8f0; border-radius: 100px; text-decoration: none;
+                    font-family: 'DM Sans', sans-serif; transition: all 0.2s ease;
+                }
+                .cta-login-btn:hover { background: #f8fafc; border-color: #94a3b8; }
+
+                .cta-trial-btn {
+                    display: inline-flex; align-items: center; gap: 6px; padding: 10px 24px;
+                    fontSize: 14px; font-weight: 700; color: #fff; background: #2563eb;
+                    border-radius: 100px; text-decoration: none; font-family: 'DM Sans', sans-serif;
+                    box-shadow: 0 4px 16px rgba(37,99,235,0.35); transition: all 0.2s ease; white-space: nowrap;
+                }
+                .cta-trial-btn:hover { background: #1d4ed8; transform: translateY(-1px); box-shadow: 0 6px 22px rgba(37,99,235,0.45); }
+
+                /* Static Mobile Custom Accordion Classes */
+                .mobile-menu-btn {
+                    width: 100%; display: flex; align-items: center; justify-content: space-between;
+                    padding: 13px 14px; background: transparent; border: none;
+                    border-radius: 12px; cursor: pointer; transition: background 0.15s; color: #0f172a;
+                }
+                .mobile-menu-btn:hover { background: #f8fafc; }
+
+                .mobile-sub-link {
+                    display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+                    border-radius: 10px; text-decoration: none; transition: background 0.15s;
+                }
+                .mobile-sub-link:hover { background: #eff6ff; }
+
+                .drawer-login-btn {
+                    display: block; text-align: center; padding: 13px; font-size: 15px; font-weight: 600;
+                    color: #0f172a; border: 1px solid #e2e8f0; border-radius: 14px; text-decoration: none;
+                    font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+                }
+                .drawer-login-btn:hover { background: #f8fafc; }
+
+                .drawer-trial-btn {
+                    display: block; text-align: center; padding: 14px; font-size: 15px; font-weight: 700;
+                    color: #fff; background: #2563eb; border-radius: 14px; text-decoration: none;
+                    font-family: 'DM Sans', sans-serif; box-shadow: 0 4px 16px rgba(37,99,235,0.35);
+                }
+         
+                @media (max-width: 900px) {
+                  .nav-links { display: none !important; }
+                  .nav-cta   { display: none !important; }
+                  .nav-hamburger { display: flex !important; }
+                }
+                @media (min-width: 901px) {
+                  .mobile-drawer   { display: none !important; }
+                  .mobile-backdrop { display: none !important; }
+                }
+            `}} />
         </>
     )
 }
 
 /* ── Mobile accordion nav item ── */
-function MobileNavItem({ link, onClose }: { link: any; onClose: () => void }) {
+function MobileNavItem({ link, onClose }: { link: NavLink; onClose: () => void }) {
     const [open, setOpen] = useState(false)
 
     return (
         <div style={{ marginBottom: 2 }}>
             <button
                 onClick={() => link.dropdown ? setOpen(v => !v) : onClose()}
-                style={{
-                    width: '100%',
-                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                    padding: '13px 14px',
-                    background: 'transparent', border: 'none',
-                    borderRadius: 12, cursor: 'pointer',
-                    transition: 'background 0.15s',
-                    color: '#0f172a',
-                }}
-                onMouseEnter={e => e.currentTarget.style.background = '#f8fafc'}
-                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                className="mobile-menu-btn"
             >
                 <span style={{ fontSize: 15, fontWeight: 700, fontFamily: "'DM Sans', sans-serif", color: '#0f172a' }}>
                     {link.dropdown ? link.label : (
@@ -472,20 +453,12 @@ function MobileNavItem({ link, onClose }: { link: any; onClose: () => void }) {
                 transition: 'max-height 0.35s cubic-bezier(0.4,0,0.2,1)',
             }}>
                 <div style={{ paddingLeft: 10, paddingBottom: 6 }}>
-                    {link.subItems?.map((sub: any, i: number) => (
+                    {link.subItems?.map((sub: SubItem, i: number) => (
                         <Link
                             key={i}
                             href={sub.href}
                             onClick={onClose}
-                            style={{
-                                display: 'flex', alignItems: 'center', gap: 12,
-                                padding: '10px 12px',
-                                borderRadius: 10,
-                                textDecoration: 'none',
-                                transition: 'background 0.15s',
-                            }}
-                            onMouseEnter={e => e.currentTarget.style.background = '#eff6ff'}
-                            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                            className="mobile-sub-link"
                         >
                             <span style={{
                                 width: 30, height: 30, borderRadius: 8,

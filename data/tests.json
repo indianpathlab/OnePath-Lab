@@ -1,0 +1,134 @@
+[
+    {
+        "name": "Complete Blood Count (CBC)",
+        "category": "Routine",
+        "oldPrice": 450,
+        "newPrice": 299,
+        "tat": "12 Hrs",
+        "sample": "Whole Blood",
+        "vial": "EDTA (Purple Top)",
+        "volume": "2 ml",
+        "desc": "Evaluates overall health and detects a wide range of disorders, including anemia, infection, and leukemia."
+    },
+    {
+        "name": "Lipid Profile",
+        "category": "Profiles",
+        "oldPrice": 900,
+        "newPrice": 599,
+        "tat": "12 Hrs",
+        "sample": "Serum",
+        "vial": "SST (Yellow Top)",
+        "volume": "3 ml",
+        "desc": "Measures cholesterol and triglycerides to assess the risk of cardiovascular disease. Fasting required."
+    },
+    {
+        "name": "Thyroid Profile (T3, T4, TSH)",
+        "category": "Profiles",
+        "oldPrice": 850,
+        "newPrice": 499,
+        "tat": "24 Hrs",
+        "sample": "Serum",
+        "vial": "SST (Yellow Top)",
+        "volume": "3 ml",
+        "desc": "Checks thyroid gland function to diagnose hyperthyroidism or hypothyroidism."
+    },
+    {
+        "name": "Liver Function Test (LFT)",
+        "category": "Profiles",
+        "oldPrice": 1100,
+        "newPrice": 699,
+        "tat": "12 Hrs",
+        "sample": "Serum",
+        "vial": "SST (Yellow Top)",
+        "volume": "3 ml",
+        "desc": "Assesses liver health by measuring proteins, liver enzymes, and bilirubin levels."
+    },
+    {
+        "name": "Kidney Function Test (KFT)",
+        "category": "Profiles",
+        "oldPrice": 1200,
+        "newPrice": 799,
+        "tat": "12 Hrs",
+        "sample": "Serum",
+        "vial": "SST (Yellow Top)",
+        "volume": "3 ml",
+        "desc": "Evaluates kidney function by measuring urea, creatinine, and electrolytes."
+    },
+    {
+        "name": "HbA1c (Glycosylated Hb)",
+        "category": "Diabetes",
+        "oldPrice": 650,
+        "newPrice": 399,
+        "tat": "12 Hrs",
+        "sample": "Whole Blood",
+        "vial": "EDTA (Purple Top)",
+        "volume": "2 ml",
+        "desc": "Measures your average blood sugar levels over the past 2-3 months."
+    },
+    {
+        "name": "Fasting Blood Sugar (FBS)",
+        "category": "Diabetes",
+        "oldPrice": 150,
+        "newPrice": 99,
+        "tat": "6 Hrs",
+        "sample": "Plasma",
+        "vial": "Fluoride (Grey Top)",
+        "volume": "2 ml",
+        "desc": "Measures blood glucose after an overnight fast to screen for diabetes."
+    },
+    {
+        "name": "Vitamin D (25-OH)",
+        "category": "Vitamins",
+        "oldPrice": 1600,
+        "newPrice": 899,
+        "tat": "24 Hrs",
+        "sample": "Serum",
+        "vial": "SST (Yellow Top)",
+        "volume": "3 ml",
+        "desc": "Measures Vitamin D levels to assess bone health, immunity, and fatigue causes."
+    },
+    {
+        "name": "Urine Routine & Microscopy",
+        "category": "Routine",
+        "oldPrice": 250,
+        "newPrice": 149,
+        "tat": "12 Hrs",
+        "sample": "Urine",
+        "vial": "Sterile Container",
+        "volume": "15-20 ml",
+        "desc": "Checks for urinary tract infections, kidney disease, and diabetes markers in urine."
+    },
+    {
+        "name": "C-Reactive Protein (CRP)",
+        "category": "Specialized",
+        "oldPrice": 700,
+        "newPrice": 450,
+        "tat": "12 Hrs",
+        "sample": "Serum",
+        "vial": "SST (Yellow Top)",
+        "volume": "2 ml",
+        "desc": "Measures the level of c-reactive protein to identify inflammation or infection in the body."
+    },
+    {
+        "name": "D-Dimer",
+        "category": "Specialized",
+        "oldPrice": 1200,
+        "newPrice": 850,
+        "tat": "12 Hrs",
+        "sample": "Plasma",
+        "vial": "Citrate (Light Blue)",
+        "volume": "2 ml",
+        "desc": "Helps rule out the presence of a serious blood clot (thrombosis)."
+    },
+    {
+        "name": "Widal Test (Typhoid)",
+        "category": "Specialized",
+        "oldPrice": 400,
+        "newPrice": 249,
+        "tat": "12 Hrs",
+        "sample": "Serum",
+        "vial": "SST (Yellow Top)",
+        "volume": "2 ml",
+        "desc": "Detects antibodies against Salmonella bacteria to diagnose Typhoid fever."
+    }
+]
