@@ -2,217 +2,275 @@
 import { useState, useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import { Search, Activity, Clock, ShieldCheck, Beaker, HeartPulse, Dna, Droplet, TestTube2, Scaling, ChevronLeft, ChevronRight } from 'lucide-react'
+import {
+    Search, Activity, Clock, ShieldCheck, Beaker, HeartPulse,
+    Dna, Droplet, TestTube2, Scaling, ChevronLeft, ChevronRight,
+    Microscope, FlaskConical
+} from 'lucide-react'
 import allTests from '../../data/tests.json'
 
 const getTestIcon = (category: string) => {
     switch (category) {
-        case 'Routine': return <Activity size={20} />;
-        case 'Profiles': return <HeartPulse size={20} />;
-        case 'Diabetes': return <Beaker size={20} />;
-        case 'Vitamins': return <ShieldCheck size={20} />;
-        case 'Specialized': return <Dna size={20} />;
-        default: return <Activity size={20} />;
+        case 'Haematology': return <Microscope size={20} />
+        case 'Microbiology': return <FlaskConical size={20} />
+        case 'Serology': return <ShieldCheck size={20} />
+        case 'Routine': return <Activity size={20} />
+        default: return <Activity size={20} />
     }
 }
 
-const categories = ['All', ...Array.from(new Set(allTests.map(test => test.category)))]
-const ITEMS_PER_PAGE = 6;
+const categoryColors: Record<string, { color: string; bg: string; border: string }> = {
+    'Haematology': { color: '#dc2626', bg: '#fef2f2', border: '#fecaca' },
+    'Microbiology': { color: '#7c3aed', bg: '#f5f3ff', border: '#e9d5ff' },
+    'Serology': { color: '#059669', bg: '#ecfdf5', border: '#bbf7d0' },
+    'Routine': { color: '#2563eb', bg: '#eff6ff', border: '#bfdbfe' },
+}
+
+const categories = ['All', 'Haematology', 'Microbiology', 'Serology', 'Routine']
+const ITEMS_PER_PAGE = 9
 
 export default function TestPricing() {
     const [searchTerm, setSearchTerm] = useState('')
     const [activeCategory, setActiveCategory] = useState('All')
     const [currentPage, setCurrentPage] = useState(1)
 
-    useEffect(() => {
-        setCurrentPage(1)
-    }, [searchTerm, activeCategory])
+    useEffect(() => { setCurrentPage(1) }, [searchTerm, activeCategory])
 
     const filteredTests = allTests.filter(test => {
-        const matchesSearch = test.name.toLowerCase().includes(searchTerm.toLowerCase())
-        const matchesCategory = activeCategory === 'All' || test.category === activeCategory
-        return matchesSearch && matchesCategory
+        const matchSearch = test.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            test.desc.toLowerCase().includes(searchTerm.toLowerCase())
+        const matchCategory = activeCategory === 'All' || test.category === activeCategory
+        return matchSearch && matchCategory
     })
 
     const totalPages = Math.ceil(filteredTests.length / ITEMS_PER_PAGE)
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
     const currentTests = filteredTests.slice(startIndex, startIndex + ITEMS_PER_PAGE)
 
-    const handlePrevPage = () => {
-        if (currentPage > 1) setCurrentPage(currentPage - 1)
-        window.scrollTo({ top: 300, behavior: 'smooth' })
+    const handlePrev = () => {
+        if (currentPage > 1) { setCurrentPage(p => p - 1); window.scrollTo({ top: 280, behavior: 'smooth' }) }
+    }
+    const handleNext = () => {
+        if (currentPage < totalPages) { setCurrentPage(p => p + 1); window.scrollTo({ top: 280, behavior: 'smooth' }) }
     }
 
-    const handleNextPage = () => {
-        if (currentPage < totalPages) setCurrentPage(currentPage + 1)
-        window.scrollTo({ top: 300, behavior: 'smooth' })
-    }
+    // Count per category
+    const counts: Record<string, number> = { All: allTests.length }
+    categories.slice(1).forEach(cat => {
+        counts[cat] = allTests.filter(t => t.category === cat).length
+    })
 
     return (
         <main style={{ background: '#f8fafc', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             <Navbar />
 
-            {/* Hero Section */}
+            {/* ── Hero ── */}
             <section style={{
-                padding: '160px 20px 80px',
-                background: 'linear-gradient(180deg, #ffffff 0%, #e0eaff 100%)',
+                padding: '160px 20px 72px',
+                background: 'linear-gradient(160deg, #ffffff 0%, #eff6ff 60%, #e0eaff 100%)',
                 textAlign: 'center',
                 borderBottom: '1px solid #e2e8f0',
                 position: 'relative',
-                overflow: 'hidden'
+                overflow: 'hidden',
             }}>
-                <div style={{ position: 'absolute', top: 50, left: -100, width: 400, height: 400, background: 'rgba(59, 130, 246, 0.1)', borderRadius: '50%', filter: 'blur(80px)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', top: 40, left: -100, width: 400, height: 400, background: 'rgba(37,99,235,0.08)', borderRadius: '50%', filter: 'blur(80px)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', top: -50, right: -80, width: 350, height: 350, background: 'rgba(124,58,237,0.06)', borderRadius: '50%', filter: 'blur(80px)', pointerEvents: 'none' }} />
 
-                <div className="container" style={{ maxWidth: 800, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-                    <h1 style={{ fontSize: 'clamp(36px, 5vw, 56px)', fontWeight: 800, color: '#0f172a', fontFamily: "'Syne', sans-serif", marginBottom: 20, letterSpacing: '-0.02em' }}>
-                        Test Information & <br />
-                        <span style={{ color: 'var(--blue-primary)' }}>Pricing List</span>
+                <div style={{ maxWidth: 800, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+                    {/* Badge */}
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 100, padding: '6px 18px', fontSize: 13, fontWeight: 600, color: '#2563eb', fontFamily: "'DM Sans', sans-serif", marginBottom: 24, boxShadow: '0 2px 10px rgba(0,0,0,0.06)' }}>
+                        <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#22c55e', display: 'inline-block' }} />
+                        {allTests.length} Tests Available · NABL Approved
+                    </div>
+
+                    <h1 style={{ fontSize: 'clamp(34px, 5vw, 56px)', fontWeight: 800, color: '#0f172a', fontFamily: "'Syne', sans-serif", marginBottom: 18, letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+                        Test Information &{' '}
+                        <span style={{ background: 'linear-gradient(135deg, #1d4ed8, #3b82f6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                            Pricing List
+                        </span>
                     </h1>
-                    <p style={{ fontSize: 'clamp(16px, 2vw, 18px)', color: '#475569', lineHeight: 1.7, fontFamily: "'DM Sans', sans-serif", marginBottom: 40 }}>
-                        Browse our comprehensive catalogue of diagnostic tests. View technical specifications, sample requirements, and transparent pricing.
+                    <p style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#475569', lineHeight: 1.7, fontFamily: "'DM Sans', sans-serif", marginBottom: 40 }}>
+                        Browse our comprehensive diagnostic catalogue across Haematology, Microbiology, Serology, and Routine panels. View sample requirements, TAT, and transparent pricing.
                     </p>
 
-                    {/* Search Bar */}
+                    {/* Search bar */}
                     <div style={{
-                        display: 'flex', alignItems: 'center', background: '#ffffff', border: '1px solid #cbd5e1',
-                        borderRadius: '100px', padding: '12px 24px', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.05)',
-                        maxWidth: 600, margin: '0 auto', transition: 'box-shadow 0.3s ease, border-color 0.3s ease',
-                    }} className="search-wrapper">
-                        <Search size={22} color="#64748b" style={{ marginRight: 12 }} />
+                        display: 'flex', alignItems: 'center',
+                        background: '#ffffff', border: '1.5px solid #e2e8f0',
+                        borderRadius: 100, padding: '13px 24px',
+                        boxShadow: '0 4px 20px -4px rgba(0,0,0,0.06)',
+                        maxWidth: 600, margin: '0 auto',
+                        transition: 'border-color 0.2s, box-shadow 0.2s',
+                    }} className="search-bar">
+                        <Search size={20} color="#94a3b8" style={{ marginRight: 12, flexShrink: 0 }} />
                         <input
                             type="text"
-                            placeholder="Search tests (e.g., CBC, Thyroid)..."
+                            placeholder="Search tests (e.g. CBC, Dengue, Vitamin D...)"
                             value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            style={{
-                                flex: 1, border: 'none', outline: 'none', fontSize: 16, color: '#0f172a',
-                                fontFamily: "'DM Sans', sans-serif", background: 'transparent'
-                            }}
+                            onChange={e => setSearchTerm(e.target.value)}
+                            style={{ flex: 1, border: 'none', outline: 'none', fontSize: 15, color: '#0f172a', fontFamily: "'DM Sans', sans-serif", background: 'transparent' }}
                         />
+                        {searchTerm && (
+                            <button onClick={() => setSearchTerm('')} style={{ background: '#f1f5f9', border: 'none', borderRadius: '50%', width: 24, height: 24, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, color: '#94a3b8', flexShrink: 0 }}>✕</button>
+                        )}
                     </div>
                 </div>
             </section>
 
-            {/* Main Content Section */}
-            <section style={{ padding: '60px 20px 100px', flex: 1 }}>
-                <div className="container" style={{ maxWidth: 1200, margin: '0 auto' }}>
+            {/* ── Main Content ── */}
+            <section style={{ padding: '48px 20px 96px', flex: 1 }}>
+                <div style={{ maxWidth: 1200, margin: '0 auto' }}>
 
-                    {/* Category Filter Pills */}
-                    <div className="hide-scrollbar" style={{
-                        display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 12, marginBottom: 36, justifyContent: 'center'
-                    }}>
-                        {categories.map(category => (
-                            <button
-                                key={category}
-                                onClick={() => setActiveCategory(category)}
-                                style={{
-                                    padding: '8px 20px', borderRadius: '100px', fontSize: 14.5, fontWeight: 600,
-                                    fontFamily: "'DM Sans', sans-serif", cursor: 'pointer', whiteSpace: 'nowrap',
-                                    transition: 'all 0.2s ease',
-                                    border: activeCategory === category ? '1px solid var(--blue-primary)' : '1px solid #e2e8f0',
-                                    background: activeCategory === category ? 'var(--blue-primary)' : '#ffffff',
-                                    color: activeCategory === category ? '#ffffff' : '#64748b',
-                                    boxShadow: activeCategory === category ? '0 4px 12px rgba(59,130,246,0.3)' : 'none',
-                                }}
-                            >
-                                {category}
-                            </button>
-                        ))}
+                    {/* Category filter pills */}
+                    <div className="category-scroll" style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 4, marginBottom: 32, justifyContent: 'center', flexWrap: 'wrap' }}>
+                        {categories.map(cat => {
+                            const cc = categoryColors[cat]
+                            const isActive = activeCategory === cat
+                            return (
+                                <button
+                                    key={cat}
+                                    onClick={() => setActiveCategory(cat)}
+                                    style={{
+                                        display: 'inline-flex', alignItems: 'center', gap: 7,
+                                        padding: '8px 20px', borderRadius: 100,
+                                        fontSize: 14, fontWeight: 600,
+                                        fontFamily: "'DM Sans', sans-serif",
+                                        cursor: 'pointer', whiteSpace: 'nowrap',
+                                        transition: 'all 0.2s ease',
+                                        border: isActive
+                                            ? `1.5px solid ${cc?.color || '#2563eb'}`
+                                            : '1.5px solid #e2e8f0',
+                                        background: isActive
+                                            ? (cc?.bg || '#eff6ff')
+                                            : '#ffffff',
+                                        color: isActive
+                                            ? (cc?.color || '#2563eb')
+                                            : '#64748b',
+                                        boxShadow: isActive
+                                            ? `0 4px 12px ${cc?.color || '#2563eb'}25`
+                                            : 'none',
+                                    }}
+                                >
+                                    {cat}
+                                    <span style={{
+                                        fontSize: 11, fontWeight: 800,
+                                        background: isActive ? (cc?.color || '#2563eb') : '#f1f5f9',
+                                        color: isActive ? '#ffffff' : '#94a3b8',
+                                        padding: '1px 7px', borderRadius: 100,
+                                    }}>
+                                        {counts[cat] || allTests.length}
+                                    </span>
+                                </button>
+                            )
+                        })}
                     </div>
 
-                    <div style={{ marginBottom: 24, color: '#64748b', fontSize: 15, fontWeight: 500, fontFamily: "'DM Sans', sans-serif" }}>
-                        Showing {filteredTests.length} tests {activeCategory !== 'All' && `for ${activeCategory}`}
+                    {/* Result count */}
+                    <div style={{ marginBottom: 24, color: '#64748b', fontSize: 14, fontWeight: 500, fontFamily: "'DM Sans', sans-serif", display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <span style={{ width: 8, height: 8, borderRadius: '50%', background: filteredTests.length > 0 ? '#22c55e' : '#ef4444', display: 'inline-block' }} />
+                        Showing <strong style={{ color: '#0f172a' }}>{filteredTests.length}</strong> tests
+                        {activeCategory !== 'All' && <> in <strong style={{ color: '#0f172a' }}>{activeCategory}</strong></>}
+                        {searchTerm && <> matching <strong style={{ color: '#0f172a' }}>"{searchTerm}"</strong></>}
                     </div>
 
-                    {/* Tests Grid */}
+                    {/* Tests grid */}
                     {filteredTests.length > 0 ? (
                         <>
-                            <div style={{
-                                display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: 24, marginBottom: 48
-                            }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 20, marginBottom: 48 }}>
                                 {currentTests.map((test, i) => {
-                                    const savePercent = Math.round(((test.oldPrice - test.newPrice) / test.oldPrice) * 100);
+                                    const savePercent = Math.round(((test.oldPrice - test.newPrice) / test.oldPrice) * 100)
+                                    const cc = categoryColors[test.category] || categoryColors['Routine']
 
                                     return (
                                         <div key={i} className="test-card" style={{
-                                            background: '#ffffff', borderRadius: '20px', border: '1px solid #e2e8f0',
-                                            padding: '28px', display: 'flex', flexDirection: 'column',
-                                            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)', position: 'relative',
+                                            background: '#ffffff', borderRadius: 20,
+                                            border: '1px solid #e2e8f0', padding: '26px',
+                                            display: 'flex', flexDirection: 'column',
+                                            transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+                                            position: 'relative',
                                         }}>
-                                            {/* Category & Save Badge */}
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+                                            {/* Top row: category + save badge */}
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
                                                 <span style={{
-                                                    background: '#f1f5f9', color: '#475569', padding: '4px 12px',
-                                                    borderRadius: '6px', fontSize: 12, fontWeight: 700,
-                                                    fontFamily: "'DM Sans', sans-serif", textTransform: 'uppercase', letterSpacing: '0.05em'
+                                                    background: cc.bg, color: cc.color,
+                                                    border: `1px solid ${cc.border}`,
+                                                    padding: '3px 12px', borderRadius: 100,
+                                                    fontSize: 11.5, fontWeight: 700,
+                                                    fontFamily: "'DM Sans', sans-serif",
+                                                    letterSpacing: '0.04em',
                                                 }}>
                                                     {test.category}
                                                 </span>
                                                 <span style={{
-                                                    background: '#dcfce7', color: '#16a34a', border: '1px solid #bbf7d0',
-                                                    padding: '4px 10px', borderRadius: '100px', fontSize: 12, fontWeight: 700,
+                                                    background: '#dcfce7', color: '#16a34a',
+                                                    border: '1px solid #bbf7d0',
+                                                    padding: '3px 10px', borderRadius: 100,
+                                                    fontSize: 11.5, fontWeight: 700,
                                                     fontFamily: "'DM Sans', sans-serif",
                                                 }}>
                                                     Save {savePercent}%
                                                 </span>
                                             </div>
 
-                                            {/* Test Name & Icon */}
-                                            <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 20 }}>
+                                            {/* Test name + icon */}
+                                            <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start', marginBottom: 16 }}>
                                                 <div style={{
-                                                    width: 48, height: 48, background: '#eff6ff', color: 'var(--blue-primary)',
-                                                    borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+                                                    width: 46, height: 46, flexShrink: 0,
+                                                    background: cc.bg, color: cc.color,
+                                                    borderRadius: 13, border: `1px solid ${cc.border}`,
+                                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
                                                 }}>
                                                     {getTestIcon(test.category)}
                                                 </div>
-                                                <h3 style={{ fontSize: 19, fontWeight: 800, color: '#0f172a', fontFamily: "'Syne', sans-serif", lineHeight: 1.3 }}>
+                                                <h3 style={{ fontSize: 17, fontWeight: 800, color: '#0f172a', fontFamily: "'Syne', sans-serif", lineHeight: 1.3 }}>
                                                     {test.name}
                                                 </h3>
                                             </div>
 
-                                            {/* Medical Description */}
-                                            <p style={{ fontSize: 14.5, color: '#64748b', lineHeight: 1.6, fontFamily: "'DM Sans', sans-serif", marginBottom: 24, flex: 1 }}>
+                                            {/* Description */}
+                                            <p style={{ fontSize: 13.5, color: '#64748b', lineHeight: 1.7, fontFamily: "'DM Sans', sans-serif", marginBottom: 20, flex: 1 }}>
                                                 {test.desc}
                                             </p>
 
-                                            {/* Technical Specifications (Vial, Sample, Volume) */}
+                                            {/* Technical specs */}
                                             <div style={{
-                                                display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12,
-                                                background: '#f8fafc', padding: '16px', borderRadius: '12px', marginBottom: 24
+                                                display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10,
+                                                background: '#f8fafc', padding: '14px', borderRadius: 12,
+                                                marginBottom: 18, border: '1px solid #f1f5f9',
                                             }}>
                                                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-                                                    <Droplet size={16} color="#94a3b8" style={{ marginTop: 2 }} />
+                                                    <Droplet size={14} color="#94a3b8" style={{ marginTop: 2, flexShrink: 0 }} />
                                                     <div>
-                                                        <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', fontFamily: "'DM Sans', sans-serif" }}>Sample</div>
-                                                        <div style={{ fontSize: 13, fontWeight: 600, color: '#334155', fontFamily: "'DM Sans', sans-serif" }}>{test.sample}</div>
+                                                        <div style={{ fontSize: 10, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', fontFamily: "'DM Sans', sans-serif", marginBottom: 2 }}>Sample</div>
+                                                        <div style={{ fontSize: 12.5, fontWeight: 600, color: '#334155', fontFamily: "'DM Sans', sans-serif" }}>{test.sample}</div>
                                                     </div>
                                                 </div>
                                                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-                                                    <TestTube2 size={16} color="#94a3b8" style={{ marginTop: 2 }} />
+                                                    <TestTube2 size={14} color="#94a3b8" style={{ marginTop: 2, flexShrink: 0 }} />
                                                     <div>
-                                                        <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', fontFamily: "'DM Sans', sans-serif" }}>Vial / Container</div>
-                                                        <div style={{ fontSize: 13, fontWeight: 600, color: '#334155', fontFamily: "'DM Sans', sans-serif" }}>{test.vial}</div>
+                                                        <div style={{ fontSize: 10, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', fontFamily: "'DM Sans', sans-serif", marginBottom: 2 }}>Vial</div>
+                                                        <div style={{ fontSize: 12.5, fontWeight: 600, color: '#334155', fontFamily: "'DM Sans', sans-serif" }}>{test.vial}</div>
                                                     </div>
                                                 </div>
                                                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, gridColumn: 'span 2' }}>
-                                                    <Scaling size={16} color="#94a3b8" style={{ marginTop: 2 }} />
+                                                    <Scaling size={14} color="#94a3b8" style={{ marginTop: 2, flexShrink: 0 }} />
                                                     <div>
-                                                        <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', fontFamily: "'DM Sans', sans-serif" }}>Required Volume</div>
-                                                        <div style={{ fontSize: 13, fontWeight: 600, color: '#334155', fontFamily: "'DM Sans', sans-serif" }}>{test.volume}</div>
+                                                        <div style={{ fontSize: 10, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', fontFamily: "'DM Sans', sans-serif", marginBottom: 2 }}>Required Volume</div>
+                                                        <div style={{ fontSize: 12.5, fontWeight: 600, color: '#334155', fontFamily: "'DM Sans', sans-serif" }}>{test.volume}</div>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            {/* TAT & Pricing Section */}
-                                            <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#64748b', fontSize: 14, fontWeight: 500, fontFamily: "'DM Sans', sans-serif" }}>
-                                                    <Clock size={16} /> TAT: {test.tat}
+                                            {/* TAT + Pricing */}
+                                            <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#64748b', fontSize: 13, fontWeight: 500, fontFamily: "'DM Sans', sans-serif" }}>
+                                                    <Clock size={14} color="#94a3b8" /> TAT: {test.tat}
                                                 </div>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                                                    <span style={{ fontSize: 15, color: '#94a3b8', textDecoration: 'line-through', fontWeight: 600, fontFamily: "'DM Sans', sans-serif" }}>
+                                                    <span style={{ fontSize: 14, color: '#94a3b8', textDecoration: 'line-through', fontWeight: 600, fontFamily: "'DM Sans', sans-serif" }}>
                                                         ₹{test.oldPrice}
                                                     </span>
-                                                    <span style={{ fontSize: 24, fontWeight: 800, color: 'var(--blue-primary)', fontFamily: "'Syne', sans-serif" }}>
+                                                    <span style={{ fontSize: 24, fontWeight: 800, color: cc.color, fontFamily: "'Syne', sans-serif" }}>
                                                         ₹{test.newPrice}
                                                     </span>
                                                 </div>
@@ -222,36 +280,51 @@ export default function TestPricing() {
                                 })}
                             </div>
 
-                            {/* Pagination Controls */}
+                            {/* Pagination */}
                             {totalPages > 1 && (
-                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 16 }}>
-                                    <button
-                                        onClick={handlePrevPage}
-                                        disabled={currentPage === 1}
-                                        className="pagination-btn"
-                                    >
-                                        <ChevronLeft size={20} /> Previous
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+                                    <button onClick={handlePrev} disabled={currentPage === 1} className="page-btn">
+                                        <ChevronLeft size={18} /> Previous
                                     </button>
 
-                                    <div style={{ fontSize: 14.5, fontWeight: 600, color: '#475569', fontFamily: "'DM Sans', sans-serif" }}>
-                                        Page {currentPage} of {totalPages}
+                                    <div style={{ display: 'flex', gap: 6 }}>
+                                        {Array.from({ length: totalPages }, (_, idx) => idx + 1).map(page => (
+                                            <button
+                                                key={page}
+                                                onClick={() => { setCurrentPage(page); window.scrollTo({ top: 280, behavior: 'smooth' }) }}
+                                                style={{
+                                                    width: 36, height: 36, borderRadius: 9,
+                                                    border: currentPage === page ? '1.5px solid #2563eb' : '1.5px solid #e2e8f0',
+                                                    background: currentPage === page ? '#2563eb' : '#ffffff',
+                                                    color: currentPage === page ? '#ffffff' : '#64748b',
+                                                    fontWeight: 700, fontSize: 13,
+                                                    fontFamily: "'DM Sans', sans-serif",
+                                                    cursor: 'pointer', transition: 'all 0.15s',
+                                                }}
+                                            >
+                                                {page}
+                                            </button>
+                                        ))}
                                     </div>
 
-                                    <button
-                                        onClick={handleNextPage}
-                                        disabled={currentPage === totalPages}
-                                        className="pagination-btn"
-                                    >
-                                        Next <ChevronRight size={20} />
+                                    <button onClick={handleNext} disabled={currentPage === totalPages} className="page-btn">
+                                        Next <ChevronRight size={18} />
                                     </button>
                                 </div>
                             )}
                         </>
                     ) : (
-                        <div style={{ textAlign: 'center', padding: '60px 20px', background: '#ffffff', borderRadius: 20, border: '1px solid #e2e8f0' }}>
-                            <Search size={48} color="#cbd5e1" style={{ margin: '0 auto 16px' }} />
-                            <h3 style={{ fontSize: 20, fontWeight: 700, color: '#0f172a', fontFamily: "'Syne', sans-serif", marginBottom: 8 }}>No tests found</h3>
-                            <p style={{ color: '#64748b', fontFamily: "'DM Sans', sans-serif" }}>We couldn't find any test matching "{searchTerm}". Please try a different keyword.</p>
+                        <div style={{ textAlign: 'center', padding: '72px 20px', background: '#ffffff', borderRadius: 20, border: '1px solid #e2e8f0' }}>
+                            <div style={{ width: 72, height: 72, background: '#f1f5f9', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
+                                <Search size={32} color="#cbd5e1" />
+                            </div>
+                            <h3 style={{ fontSize: 20, fontWeight: 700, color: '#0f172a', fontFamily: "'Syne', sans-serif", marginBottom: 10 }}>No tests found</h3>
+                            <p style={{ color: '#64748b', fontFamily: "'DM Sans', sans-serif", fontSize: 15 }}>
+                                No test matches "<strong>{searchTerm}</strong>". Try a different keyword or browse by category.
+                            </p>
+                            <button onClick={() => { setSearchTerm(''); setActiveCategory('All') }} style={{ marginTop: 20, padding: '10px 24px', background: '#2563eb', color: '#fff', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 600, fontFamily: "'DM Sans', sans-serif", cursor: 'pointer' }}>
+                                Clear Filters
+                            </button>
                         </div>
                     )}
                 </div>
@@ -260,53 +333,29 @@ export default function TestPricing() {
             <Footer />
 
             <style>{`
-                .search-wrapper:focus-within {
-                    border-color: var(--blue-primary) !important;
-                    box-shadow: 0 10px 30px -5px rgba(59, 130, 246, 0.15) !important;
+                .search-bar:focus-within {
+                    border-color: #2563eb !important;
+                    box-shadow: 0 0 0 4px rgba(37,99,235,0.1) !important;
                 }
-                
                 .test-card:hover {
-                    border-color: #cbd5e1 !important;
-                    box-shadow: 0 15px 35px -10px rgba(0,0,0,0.08) !important;
-                    transform: translateY(-4px);
+                    border-color: #bfdbfe !important;
+                    box-shadow: 0 12px 36px -8px rgba(0,0,0,0.1) !important;
+                    transform: translateY(-3px);
                 }
-
-                .pagination-btn {
-                    display: flex;
-                    align-items: center;
-                    gap: 6px;
-                    padding: 10px 20px;
-                    border-radius: 100px;
-                    background: #ffffff;
-                    border: 1px solid #cbd5e1;
-                    color: #0f172a;
-                    font-size: 14.5px;
-                    font-weight: 600;
+                .page-btn {
+                    display: flex; align-items: center; gap: 6px;
+                    padding: 10px 20px; border-radius: 100px;
+                    background: #ffffff; border: 1.5px solid #e2e8f0;
+                    color: #334155; font-size: 14px; font-weight: 600;
                     font-family: 'DM Sans', sans-serif;
-                    cursor: pointer;
-                    transition: all 0.2s ease;
+                    cursor: pointer; transition: all 0.2s ease;
                 }
-
-                .pagination-btn:hover:not(:disabled) {
-                    background: #f8fafc;
-                    border-color: var(--blue-primary);
-                    color: var(--blue-primary);
+                .page-btn:hover:not(:disabled) {
+                    background: #eff6ff; border-color: #2563eb; color: #2563eb;
                 }
-
-                .pagination-btn:disabled {
-                    opacity: 0.5;
-                    cursor: not-allowed;
-                    background: #f1f5f9;
-                }
-
-                .hide-scrollbar::-webkit-scrollbar {
-                    display: none;
-                }
-                
-                @media (max-width: 768px) {
-                    .hide-scrollbar {
-                        justify-content: flex-start !important;
-                    }
+                .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+                @media (max-width: 640px) {
+                    .category-scroll { justify-content: flex-start !important; flex-wrap: nowrap !important; }
                 }
             `}</style>
         </main>
